@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#667eea">
-    <title>Cloth Store - POS & Inventory</title>
+    <title>Cloth Store - POS & Inventory System</title>
     <style>
         * {
             margin: 0;
@@ -17,86 +17,316 @@
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 10px;
+            padding: 8px;
         }
 
         .container {
-            max-width: 600px;
+            width: 100%;
+            max-width: 100%;
             margin: 0 auto;
-            padding: 0 10px;
+            padding: 0;
         }
 
-        @media (min-width: 1024px) {
-            body { padding: 20px; }
-            .container { max-width: 1400px; }
+        @media (min-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .container {
+                max-width: 1200px;
+                margin: 0 auto;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+            
+            .header, .tabs-wrapper, .stats, .card, .button-group, 
+            .logout-btn, .search-box, .action-buttons, .btn-primary, 
+            .btn-secondary, .modal, .message-modal, .confirm-modal,
+            .tabs, .pos-layout, .products-grid, .cart-wrapper, .inventory-wrapper,
+            #authSection, #mainApp, .daily-report-card, .reset-btn {
+                display: none !important;
+            }
+            
+            .print-container {
+                display: block !important;
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                padding: 20px;
+                background: white;
+            }
+            
+            .bill-for-print {
+                max-width: 300px;
+                margin: 0 auto;
+                font-family: 'Courier New', monospace;
+            }
+            
+            @page {
+                size: auto;
+                margin: 10mm;
+            }
         }
 
         /* Header */
         .header {
             background: white;
-            padding: 15px;
+            padding: 12px;
             border-radius: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-align: center;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .header h1 {
             color: #667eea;
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 8px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
             gap: 10px;
-            flex-wrap: wrap;
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 25px;
         }
 
-        .currency-badge {
-            background: #ffc107;
+        .user-name {
+            font-weight: 600;
             color: #333;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
+            font-size: 12px;
         }
 
-        @media (min-width: 768px) {
-            .header h1 { font-size: 2rem; }
+        .logout-btn {
+            background: #dc3545;
+            padding: 6px 12px;
+            font-size: 12px;
+            min-height: auto;
+        }
+
+        /* Custom Message Modal */
+        .message-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .message-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 350px;
+            width: 100%;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .message-icon.success { color: #28a745; }
+        .message-icon.error { color: #dc3545; }
+        .message-icon.warning { color: #ffc107; }
+        .message-icon.info { color: #667eea; }
+
+        .message-title {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .message-text {
+            color: #666;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .message-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            min-width: 100px;
+        }
+
+        /* Custom Confirm Modal */
+        .confirm-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 2001;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .confirm-content {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 350px;
+            width: 100%;
+            text-align: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        .confirm-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .confirm-btn-yes {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .confirm-btn-no {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* Auth Forms */
+        .auth-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 80vh;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            max-width: 400px;
+            width: 100%;
+            margin: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .auth-card h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .auth-switch {
+            text-align: center;
+            margin-top: 15px;
+        }
+
+        .auth-switch a {
+            color: #667eea;
+            cursor: pointer;
+            text-decoration: none;
         }
 
         /* Tabs */
+        .tabs-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            margin-bottom: 12px;
+        }
+
         .tabs {
             display: flex;
-            gap: 8px;
-            margin-bottom: 15px;
+            gap: 6px;
             background: white;
-            padding: 8px;
+            padding: 6px;
             border-radius: 50px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            min-width: min-content;
         }
 
         .tab-btn {
-            flex: 1;
-            padding: 12px 8px;
-            font-size: 14px;
+            flex-shrink: 0;
+            padding: 10px 16px;
+            font-size: 13px;
             font-weight: 600;
             border: none;
             border-radius: 40px;
             cursor: pointer;
-            transition: all 0.3s;
             background: #f0f0f0;
             color: #666;
             white-space: nowrap;
+            min-height: 44px;
         }
 
         @media (min-width: 768px) {
-            .tab-btn { padding: 15px; font-size: 18px; }
+            .tab-btn {
+                flex: 1;
+                padding: 12px 20px;
+                font-size: 14px;
+            }
         }
 
         .tab-btn.active {
             background: #667eea;
             color: white;
-            box-shadow: 0 2px 8px rgba(102,126,234,0.3);
         }
 
         .tab-content {
@@ -104,7 +334,9 @@
             animation: fadeIn 0.3s ease;
         }
 
-        .tab-content.active { display: block; }
+        .tab-content.active {
+            display: block;
+        }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
@@ -114,40 +346,41 @@
         /* Cards */
         .card {
             background: white;
-            border-radius: 20px;
-            padding: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            padding: 12px;
+            margin-bottom: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
         }
 
         .card h2 {
             color: #333;
-            margin-bottom: 15px;
-            font-size: 1.2rem;
-            border-left: 4px solid #667eea;
-            padding-left: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 1rem;
+            border-left: 3px solid #667eea;
+            padding-left: 10px;
         }
 
         @media (min-width: 768px) {
-            .card { padding: 25px; margin-bottom: 25px; }
-            .card h2 { font-size: 1.5rem; }
+            .card {
+                padding: 20px;
+                margin-bottom: 20px;
+            }
+            .card h2 {
+                font-size: 1.3rem;
+            }
         }
 
         /* Forms */
         .form-row {
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 10px;
         }
 
-        @media (min-width: 768px) {
+        @media (min-width: 640px) {
             .form-row {
                 display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 15px;
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -157,42 +390,38 @@
 
         label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             color: #555;
             font-weight: 500;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         input, select {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             border: 1px solid #ddd;
-            border-radius: 12px;
-            font-size: 16px;
-            -webkit-appearance: none;
-            appearance: none;
+            border-radius: 10px;
+            font-size: 14px;
         }
 
-        /* Buttons */
         button {
             background: #667eea;
             color: white;
             border: none;
-            padding: 14px 20px;
-            border-radius: 12px;
+            padding: 12px 16px;
+            border-radius: 10px;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 14px;
             font-weight: 600;
-            transition: all 0.2s;
-            min-height: 48px;
+            min-height: 44px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         button:active {
-            transform: scale(0.98);
+            transform: scale(0.97);
         }
 
         .btn-save { background: #28a745; }
@@ -202,14 +431,20 @@
         .btn-edit { background: #ffc107; color: #333; }
         .btn-delete { background: #dc3545; }
         .btn-small {
-            padding: 8px 12px;
-            font-size: 13px;
-            min-height: 36px;
+            padding: 6px 10px;
+            font-size: 11px;
+            min-height: 32px;
+        }
+        .reset-btn {
+            background: #ffc107;
+            color: #333;
+            padding: 8px 16px;
+            font-size: 12px;
         }
 
         .button-group {
             display: flex;
-            gap: 10px;
+            gap: 8px;
             margin-top: 10px;
         }
 
@@ -217,60 +452,96 @@
             flex: 1;
         }
 
-        /* Stats Cards */
+        /* Stats */
         .stats {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 15px;
+            gap: 8px;
+            margin-bottom: 12px;
         }
 
         @media (min-width: 768px) {
             .stats {
                 grid-template-columns: repeat(4, 1fr);
-                gap: 20px;
-                margin-bottom: 25px;
+                gap: 15px;
             }
         }
 
         .stat-card {
             background: white;
-            padding: 15px 10px;
-            border-radius: 15px;
+            padding: 10px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-2px);
         }
 
         .stat-card h3 {
             color: #666;
-            font-size: 11px;
-            margin-bottom: 8px;
+            font-size: 10px;
+            margin-bottom: 5px;
         }
 
         .stat-card .value {
-            font-size: 20px;
+            font-size: 16px;
             font-weight: bold;
             color: #667eea;
         }
 
         @media (min-width: 768px) {
-            .stat-card { padding: 20px; }
-            .stat-card h3 { font-size: 14px; }
-            .stat-card .value { font-size: 28px; }
+            .stat-card .value {
+                font-size: 22px;
+            }
         }
 
-        /* POS Layout */
-        .pos-layout {
+        /* Daily Report Card */
+        .daily-report-card {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 12px;
+        }
+        
+        .daily-report-card h3 {
+            font-size: 14px;
+            margin-bottom: 10px;
+            opacity: 0.9;
+        }
+        
+        .report-stats {
             display: flex;
-            flex-direction: column;
+            justify-content: space-between;
             gap: 15px;
+            flex-wrap: wrap;
         }
-
-        @media (min-width: 1024px) {
-            .pos-layout {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 25px;
+        
+        .report-item {
+            flex: 1;
+            text-align: center;
+        }
+        
+        .report-label {
+            font-size: 11px;
+            opacity: 0.8;
+            margin-bottom: 5px;
+        }
+        
+        .report-value {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        
+        @media (min-width: 768px) {
+            .daily-report-card {
+                padding: 20px;
+            }
+            .report-value {
+                font-size: 28px;
             }
         }
 
@@ -278,12 +549,12 @@
         .products-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 10px;
-            max-height: 400px;
+            gap: 8px;
+            max-height: 350px;
             overflow-y: auto;
         }
 
-        @media (min-width: 768px) {
+        @media (min-width: 480px) {
             .products-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
@@ -291,109 +562,93 @@
 
         @media (min-width: 1024px) {
             .products-grid {
-                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             }
         }
 
         .product-card {
             background: #f8f9fa;
-            padding: 12px;
-            border-radius: 12px;
+            padding: 10px;
+            border-radius: 10px;
             cursor: pointer;
-            transition: all 0.2s;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            min-height: 70px;
         }
 
         .product-card:active {
             transform: scale(0.98);
-            background: #e9ecef;
         }
 
         .product-info h4 {
-            font-size: 14px;
-            margin-bottom: 4px;
+            font-size: 13px;
             font-weight: 600;
         }
 
         .product-info p {
-            font-size: 11px;
+            font-size: 10px;
             color: #666;
-        }
-
-        .product-price {
-            text-align: right;
         }
 
         .price {
             color: #28a745;
             font-weight: bold;
-            font-size: 16px;
-        }
-
-        .stock {
-            font-size: 10px;
-            color: #dc3545;
-        }
-
-        /* Cart Table */
-        .cart-table {
-            width: 100%;
             font-size: 13px;
         }
 
-        .cart-table th, .cart-table td {
-            padding: 10px 5px;
-            text-align: left;
-            vertical-align: middle;
+        /* Cart */
+        .cart-wrapper {
+            overflow-x: auto;
         }
 
-        .cart-table th {
-            background: #f8f9fa;
-            color: #333;
-            font-weight: 600;
+        .cart-table {
+            width: 100%;
+            min-width: 400px;
+            font-size: 12px;
+            border-collapse: collapse;
+        }
+
+        .cart-table th, .cart-table td {
+            padding: 8px 4px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
         }
 
         .quantity-input {
-            width: 55px;
-            padding: 6px;
-            font-size: 14px;
+            width: 50px;
+            padding: 5px;
             text-align: center;
         }
 
         .btn-remove {
             background: #dc3545;
-            padding: 6px 10px;
-            font-size: 14px;
-            min-height: auto;
+            padding: 4px 8px;
+            font-size: 11px;
         }
 
         .cart-total {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
             text-align: right;
-            margin: 15px 0;
+            margin: 12px 0;
             padding-top: 10px;
             border-top: 2px solid #667eea;
         }
 
         /* Inventory Table */
-        .inventory-table {
+        .inventory-wrapper {
             overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
         }
 
         table {
             width: 100%;
-            min-width: 650px;
+            min-width: 550px;
             border-collapse: collapse;
-            font-size: 13px;
+            font-size: 11px;
         }
 
         th, td {
-            padding: 12px 8px;
+            padding: 8px 6px;
             text-align: left;
             border-bottom: 1px solid #eee;
         }
@@ -401,56 +656,26 @@
         th {
             background: #667eea;
             color: white;
-            font-weight: 600;
-            position: sticky;
-            top: 0;
-        }
-
-        td {
-            vertical-align: middle;
-        }
-
-        @media (min-width: 768px) {
-            table {
-                min-width: 100%;
-                font-size: 14px;
-            }
-            th, td {
-                padding: 12px;
-            }
-        }
-
-        .product-name-cell {
-            font-weight: 600;
-            color: #333;
-        }
-
-        .product-category {
-            font-size: 11px;
-            color: #666;
-            display: block;
         }
 
         .action-buttons {
             display: flex;
-            gap: 8px;
-            flex-wrap: nowrap;
+            gap: 6px;
+            flex-wrap: wrap;
         }
 
-        /* Search Box */
         .search-box {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
         }
 
         .search-box input {
-            font-size: 16px;
+            font-size: 14px;
             border-radius: 25px;
-            padding: 12px 15px;
-            background: #f8f9fa;
+            padding: 10px 14px;
         }
 
-        /* Modal */
-        .modal {
+        /* Bill Modal */
+        .bill-modal {
             position: fixed;
             top: 0;
             left: 0;
@@ -461,54 +686,106 @@
             display: none;
             justify-content: center;
             align-items: center;
-            padding: 15px;
+            padding: 10px;
         }
 
-        .modal-content {
+        .bill-modal-content {
             background: white;
-            border-radius: 20px;
+            border-radius: 15px;
             padding: 20px;
-            max-width: 500px;
+            max-width: 400px;
             width: 100%;
-            max-height: 80vh;
+            max-height: 85vh;
             overflow-y: auto;
+        }
+
+        .bill-actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+
+        /* Bill Structure */
+        .bill-for-display {
+            max-width: 300px;
+            margin: 0 auto;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            line-height: 1.4;
         }
 
         .bill-header {
             text-align: center;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px dashed #ddd;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px dashed #000;
+        }
+
+        .bill-store-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .bill-address {
+            font-size: 10px;
+            margin-bottom: 3px;
+        }
+
+        .bill-divider {
+            border-top: 1px dashed #000;
+            margin: 8px 0;
+        }
+
+        .bill-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
         }
 
         .bill-items {
-            margin: 15px 0;
+            margin: 10px 0;
         }
 
         .bill-item {
             display: flex;
             justify-content: space-between;
-            padding: 8px 0;
-            border-bottom: 1px solid #eee;
+            margin-bottom: 4px;
+            font-size: 11px;
+        }
+
+        .bill-item-name {
+            flex: 2;
+        }
+
+        .bill-item-qty {
+            flex: 0.5;
+            text-align: center;
+        }
+
+        .bill-item-price {
+            flex: 0.8;
+            text-align: right;
+        }
+
+        .bill-item-total {
+            flex: 0.8;
+            text-align: right;
         }
 
         .bill-total {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid #333;
-            font-weight: bold;
+            margin-top: 10px;
+            padding-top: 8px;
+            border-top: 1px dashed #000;
         }
 
-        /* Alert */
-        .alert-success {
-            background: #d4edda;
-            color: #155724;
-            padding: 12px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            display: none;
-            font-size: 14px;
+        .bill-footer {
             text-align: center;
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed #000;
+            font-size: 10px;
         }
 
         .low-stock {
@@ -518,9 +795,9 @@
 
         .badge {
             display: inline-block;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 9px;
             font-weight: 600;
         }
 
@@ -529,180 +806,638 @@
             color: #333;
         }
 
-        .rupee-sign {
-            font-weight: bold;
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+        }
+
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 10px;
+        }
+
+        .print-container {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>
-                👕 Cloth Store 
-            </h1>
+    <div class="container" id="app">
+        <!-- Custom Message Modal -->
+        <div id="customMessageModal" class="message-modal">
+            <div class="message-content">
+                <div class="message-icon" id="messageIcon">✓</div>
+                <div class="message-title" id="messageTitle">Success</div>
+                <div class="message-text" id="messageText">Operation completed successfully!</div>
+                <button class="message-btn" onclick="closeMessageModal()">OK</button>
+            </div>
         </div>
 
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('pos')">🛒 POS & Billing</button>
-            <button class="tab-btn" onclick="switchTab('inventory')">📦 Inventory Management</button>
-        </div>
-
-        <!-- POS Tab -->
-        <div id="posTab" class="tab-content active">
-            <div class="stats">
-                <div class="stat-card">
-                    <h3>Today's Sales</h3>
-                    <div class="value" id="todaySales">Rs 0</div>
+        <!-- Custom Confirm Modal -->
+        <div id="customConfirmModal" class="confirm-modal">
+            <div class="confirm-content">
+                <div class="message-icon" style="color: #ffc107;">⚠️</div>
+                <div class="message-title" id="confirmTitle">Confirm Action</div>
+                <div class="message-text" id="confirmText">Are you sure?</div>
+                <div class="confirm-buttons">
+                    <button class="confirm-btn-yes" id="confirmYesBtn">Yes</button>
+                    <button class="confirm-btn-no" id="confirmNoBtn">No</button>
                 </div>
-                <div class="stat-card">
-                    <h3>Cart Items</h3>
-                    <div class="value" id="cartCount">0</div>
+            </div>
+        </div>
+
+        <!-- Bill Modal -->
+        <div id="billModal" class="bill-modal">
+            <div class="bill-modal-content">
+                <div id="billDisplay"></div>
+                <div class="bill-actions">
+                    <button onclick="printBillFromModal()" style="background: #17a2b8;">🖨️ Print Bill</button>
+                    <button onclick="closeBillModal()" style="background: #6c757d;">Close</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Hidden Print Container -->
+        <div id="printContainer" class="print-container"></div>
+
+        <!-- Login/Register Section -->
+        <div id="authSection">
+            <div class="auth-container">
+                <div class="auth-card">
+                    <h2 id="authTitle">🔐 Login</h2>
+                    <div id="loginForm">
+                        <div class="form-group">
+                            <label>📧 Email</label>
+                            <input type="email" id="loginEmail" placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label>🔒 Password</label>
+                            <input type="password" id="loginPassword" placeholder="Enter your password">
+                        </div>
+                        <button onclick="login()" style="width:100%; margin-top:15px;">Login</button>
+                        <div class="auth-switch">
+                            Don't have an account? <a onclick="showRegister()">Register here</a>
+                        </div>
+                    </div>
+                    <div id="registerForm" style="display:none;">
+                        <div class="form-group">
+                            <label>👤 Full Name</label>
+                            <input type="text" id="regName" placeholder="Enter your full name">
+                        </div>
+                        <div class="form-group">
+                            <label>📧 Email</label>
+                            <input type="email" id="regEmail" placeholder="Enter your email">
+                        </div>
+                        <div class="form-group">
+                            <label>🔒 Password</label>
+                            <input type="password" id="regPassword" placeholder="Create a password">
+                        </div>
+                        <button onclick="register()" style="width:100%; margin-top:15px;">Register</button>
+                        <div class="auth-switch">
+                            Already have an account? <a onclick="showLogin()">Login here</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App Section -->
+        <div id="mainApp" style="display:none;">
+            <div class="header">
+                <h1>👕 Cloth Store <span class="currency-badge">🇱🇰 Rs</span></h1>
+                <div class="user-info">
+                    <span class="user-name" id="userNameDisplay"></span>
+                    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
                 </div>
             </div>
 
-            <div class="pos-layout">
-                <div class="card">
-                    <h2>🛍️ Products</h2>
-                    <div class="search-box">
-                        <input type="text" id="searchProduct" placeholder="🔍 Search products..." onkeyup="searchProducts()">
+            <div class="tabs-wrapper">
+                <div class="tabs">
+                    <button class="tab-btn active" onclick="switchTab('pos')">🛒 POS & Billing</button>
+                    <button class="tab-btn" onclick="switchTab('inventory')">📦 My Inventory</button>
+                    <button class="tab-btn" onclick="switchTab('reports')">📊 Daily Reports</button>
+                </div>
+            </div>
+
+            <!-- POS Tab -->
+            <div id="posTab" class="tab-content active">
+                <!-- Daily Report Summary on POS -->
+                <div class="daily-report-card" onclick="switchTab('reports')" style="cursor: pointer;">
+                    <h3>📊 Today's Business Summary</h3>
+                    <div class="report-stats">
+                        <div class="report-item">
+                            <div class="report-label">Total Bills</div>
+                            <div class="report-value" id="dailyBillsCount">0</div>
+                        </div>
+                        <div class="report-item">
+                            <div class="report-label">Total Income</div>
+                            <div class="report-value" id="dailyIncome">Rs 0</div>
+                        </div>
+                        <div class="report-item">
+                            <div class="report-label">Avg. Bill Value</div>
+                            <div class="report-value" id="dailyAvgBill">Rs 0</div>
+                        </div>
                     </div>
-                    <div class="products-grid" id="productsGrid"></div>
+                    <div style="text-align: center; margin-top: 8px; font-size: 10px; opacity: 0.7;">👇 Tap for full report</div>
+                </div>
+
+                <div class="stats">
+                    <div class="stat-card">
+                        <h3>Current Cart Items</h3>
+                        <div class="value" id="cartCount">0</div>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Cart Total</h3>
+                        <div class="value" id="cartTotalDisplay">Rs 0</div>
+                    </div>
+                </div>
+
+                <div class="pos-layout" style="display: flex; flex-direction: column; gap: 12px;">
+                    <div class="card">
+                        <h2>🛍️ Products</h2>
+                        <div class="search-box">
+                            <input type="text" id="searchProduct" placeholder="🔍 Search my products..." onkeyup="searchProducts()">
+                        </div>
+                        <div class="products-grid" id="productsGrid"></div>
+                    </div>
+
+                    <div class="card">
+                        <h2>🛒 Shopping Cart</h2>
+                        <div class="cart-wrapper">
+                            <div id="cartItems"></div>
+                        </div>
+                        <div class="cart-total" id="cartTotal">Total: Rs 0.00</div>
+                        <div class="button-group">
+                            <button class="btn-primary" onclick="checkout()">💳 Checkout</button>
+                            <button class="btn-secondary" onclick="clearCart()">🗑️ Clear</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Inventory Tab -->
+            <div id="inventoryTab" class="tab-content">
+                <div class="stats">
+                    <div class="stat-card"><h3>📦 My Products</h3><div class="value" id="totalProducts">0</div></div>
+                    <div class="stat-card"><h3>📊 Total Stock</h3><div class="value" id="totalStock">0</div></div>
+                    <div class="stat-card"><h3>💰 Inventory Value</h3><div class="value" id="totalValue">Rs 0</div></div>
+                    <div class="stat-card"><h3>⚠️ Low Stock</h3><div class="value" id="lowStock">0</div></div>
                 </div>
 
                 <div class="card">
-                    <h2>🛒 Shopping Cart</h2>
-                    <div id="cartItems"></div>
-                    <div class="cart-total" id="cartTotal">Total: Rs 0.00</div>
+                    <h2 id="formTitle">➕ Add New Product</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>📝 Product Name</label>
+                            <input type="text" id="productName" placeholder="e.g., Cotton T-Shirt">
+                        </div>
+                        <div class="form-group">
+                            <label>🏷️ Category</label>
+                            <select id="category">
+                                <option value="Shirts">👕 Shirts</option>
+                                <option value="Pants">👖 Pants</option>
+                                <option value="Dresses">👗 Dresses</option>
+                                <option value="Jackets">🧥 Jackets</option>
+                                <option value="Accessories">💍 Accessories</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>📏 Size</label>
+                            <select id="size">
+                                <option value="XS">XS</option><option value="S">S</option><option value="M" selected>M</option>
+                                <option value="L">L</option><option value="XL">XL</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>💰 Price (Rs)</label>
+                            <input type="number" id="price" placeholder="0.00" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label>📦 Quantity</label>
+                            <input type="number" id="quantity" placeholder="0">
+                        </div>
+                    </div>
                     <div class="button-group">
-                        <button class="btn-primary" onclick="checkout()">💳 Checkout</button>
-                        <button class="btn-secondary" onclick="clearCart()">🗑️ Clear</button>
+                        <button class="btn-save" onclick="saveProduct()">💾 Save Product</button>
+                        <button class="btn-cancel" onclick="cancelEdit()">❌ Cancel</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>📋 My Product Inventory</h2>
+                    <div class="search-box">
+                        <input type="text" id="searchInventory" placeholder="🔍 Search my inventory..." onkeyup="searchInventory()">
+                    </div>
+                    <div class="inventory-wrapper">
+                        <table>
+                            <thead>
+                                <tr><th>ID</th><th>Product Name</th><th>Size</th><th>Price (Rs)</th><th>Stock</th><th>Actions</th></tr>
+                            </thead>
+                            <tbody id="inventoryBody"></tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Inventory Tab -->
-        <div id="inventoryTab" class="tab-content">
-            <div id="successMsg" class="alert-success">✓ Product saved successfully!</div>
-
-            <div class="stats">
-                <div class="stat-card"><h3>📦 Total Products</h3><div class="value" id="totalProducts">0</div></div>
-                <div class="stat-card"><h3>📊 Total Stock</h3><div class="value" id="totalStock">0</div></div>
-                <div class="stat-card"><h3>💰 Inventory Value</h3><div class="value" id="totalValue">Rs 0</div></div>
-                <div class="stat-card"><h3>⚠️ Low Stock</h3><div class="value" id="lowStock">0</div></div>
-            </div>
-
-            <div class="card">
-                <h2 id="formTitle">➕ Add New Product</h2>
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>📝 Product Name</label>
-                        <input type="text" id="productName" placeholder="e.g., Cotton T-Shirt">
+            <!-- Reports Tab -->
+            <div id="reportsTab" class="tab-content">
+                <div class="card">
+                    <h2>📊 Daily Sales Report</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <strong>Date:</strong> <span id="reportDate"></span>
+                        </div>
+                        <button class="reset-btn" onclick="resetDailyReport()">🔄 Reset Today's Report</button>
                     </div>
-                    <div class="form-group">
-                        <label>🏷️ Category</label>
-                        <select id="category">
-                            <option value="Shirts">👕 Shirts</option>
-                            <option value="Pants">👖 Pants</option>
-                            <option value="Dresses">👗 Dresses</option>
-                            <option value="Jackets">🧥 Jackets</option>
-                            <option value="Accessories">💍 Accessories</option>
-                        </select>
+                    
+                    <div class="stats" style="margin-bottom: 20px;">
+                        <div class="stat-card">
+                            <h3>Total Bills</h3>
+                            <div class="value" id="reportTotalBills">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Items Sold</h3>
+                            <div class="value" id="reportTotalItems">0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Total Income</h3>
+                            <div class="value" id="reportTotalIncome">Rs 0</div>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Average Bill</h3>
+                            <div class="value" id="reportAvgBill">Rs 0</div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>📏 Size</label>
-                        <select id="size">
-                            <option value="XS">XS</option><option value="S">S</option><option value="M" selected>M</option>
-                            <option value="L">L</option><option value="XL">XL</option>
-                        </select>
+                    
+                    <h3 style="margin-bottom: 10px;">📋 Bill History</h3>
+                    <div class="inventory-wrapper">
+                        <table id="billsTable">
+                            <thead>
+                                <tr><th>Bill #</th><th>Time</th><th>Items</th><th>Total</th><th>Cashier</th></tr>
+                            </thead>
+                            <tbody id="billsList"></tbody>
+                        </table>
                     </div>
-                    <div class="form-group">
-                        <label>💰 Price (Rs)</label>
-                        <input type="number" id="price" placeholder="0.00" step="0.01">
-                    </div>
-                    <div class="form-group">
-                        <label>📦 Quantity</label>
-                        <input type="number" id="quantity" placeholder="0">
-                    </div>
-                </div>
-                <div class="button-group">
-                    <button class="btn-save" onclick="saveProduct()">💾 Save Product</button>
-                    <button class="btn-cancel" onclick="cancelEdit()">❌ Cancel</button>
                 </div>
             </div>
-
-            <div class="card">
-                <h2>📋 Product Inventory</h2>
-                <div class="search-box">
-                    <input type="text" id="searchInventory" placeholder="🔍 Search by name, category, or size..." onkeyup="searchInventory()">
-                </div>
-                <div class="inventory-table">
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Product Name</th>
-                                <th>Size</th>
-                                <th>Price (Rs)</th>
-                                <th>Stock</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="inventoryBody"></tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Bill Modal -->
-    <div id="billModal" class="modal">
-        <div class="modal-content">
-            <div id="billContent"></div>
-            <button onclick="printBill()" style="background: #17a2b8; width: 100%; margin-top: 15px;">🖨️ Print Bill</button>
-            <button onclick="closeModal()" style="margin-top: 10px; width: 100%; background: #6c757d;">Close</button>
         </div>
     </div>
 
     <script>
-        let inventory = [], cart = [], nextId = 1, editMode = false, editId = null, todaySales = 0;
+        // Custom Message Box Functions
+        function showMessage(title, message, type = 'success') {
+            const modal = document.getElementById('customMessageModal');
+            const iconEl = document.getElementById('messageIcon');
+            const titleEl = document.getElementById('messageTitle');
+            const textEl = document.getElementById('messageText');
+            
+            let icon = '✓';
+            if (type === 'success') icon = '✓';
+            else if (type === 'error') icon = '✗';
+            else if (type === 'warning') icon = '⚠';
+            else if (type === 'info') icon = 'ℹ';
+            
+            iconEl.textContent = icon;
+            iconEl.className = `message-icon ${type}`;
+            titleEl.textContent = title;
+            textEl.textContent = message;
+            modal.style.display = 'flex';
+        }
+        
+        function closeMessageModal() {
+            document.getElementById('customMessageModal').style.display = 'none';
+        }
 
+        // Custom Confirm Box
+        let confirmCallback = null;
+        
+        function showConfirm(title, message, callback) {
+            const modal = document.getElementById('customConfirmModal');
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmText').textContent = message;
+            confirmCallback = callback;
+            modal.style.display = 'flex';
+        }
+        
+        function closeConfirmModal() {
+            document.getElementById('customConfirmModal').style.display = 'none';
+            confirmCallback = null;
+        }
+        
+        document.getElementById('confirmYesBtn').onclick = function() {
+            if (confirmCallback) confirmCallback(true);
+            closeConfirmModal();
+        };
+        
+        document.getElementById('confirmNoBtn').onclick = function() {
+            if (confirmCallback) confirmCallback(false);
+            closeConfirmModal();
+        };
+
+        // User data structure
+        let users = [];
+        let currentUser = null;
+        let inventory = [];
+        let cart = [];
+        let nextId = 1;
+        let editMode = false;
+        let editId = null;
+        
+        // Daily Sales Data
+        let dailySales = {
+            date: new Date().toDateString(),
+            totalIncome: 0,
+            totalBills: 0,
+            totalItems: 0,
+            bills: []
+        };
+        
+        let currentBillData = null;
+
+        // Load users from localStorage
+        function loadUsers() {
+            const saved = localStorage.getItem('clothStoreUsers');
+            if (saved) {
+                users = JSON.parse(saved);
+            } else {
+                users = [{
+                    id: 1,
+                    name: "Demo User",
+                    email: "demo@example.com",
+                    password: "123456",
+                    inventory: [],
+                    nextId: 1,
+                    dailySales: null
+                }];
+                saveUsers();
+            }
+        }
+
+        function saveUsers() {
+            localStorage.setItem('clothStoreUsers', JSON.stringify(users));
+        }
+        
+        // Load Daily Sales for current user
+        function loadDailySales() {
+            if (currentUser && currentUser.dailySales) {
+                const savedSales = currentUser.dailySales;
+                const today = new Date().toDateString();
+                if (savedSales.date === today) {
+                    dailySales = savedSales;
+                } else {
+                    // New day - reset sales
+                    dailySales = {
+                        date: today,
+                        totalIncome: 0,
+                        totalBills: 0,
+                        totalItems: 0,
+                        bills: []
+                    };
+                    saveDailySales();
+                }
+            } else if (currentUser) {
+                dailySales = {
+                    date: new Date().toDateString(),
+                    totalIncome: 0,
+                    totalBills: 0,
+                    totalItems: 0,
+                    bills: []
+                };
+                saveDailySales();
+            }
+            updateDailyReportDisplay();
+        }
+        
+        function saveDailySales() {
+            if (currentUser) {
+                currentUser.dailySales = dailySales;
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex] = currentUser;
+                    saveUsers();
+                }
+            }
+            updateDailyReportDisplay();
+        }
+        
+        function updateDailyReportDisplay() {
+            // Update POS summary
+            document.getElementById('dailyBillsCount').textContent = dailySales.totalBills;
+            document.getElementById('dailyIncome').innerHTML = formatCurrency(dailySales.totalIncome);
+            const avgBill = dailySales.totalBills > 0 ? dailySales.totalIncome / dailySales.totalBills : 0;
+            document.getElementById('dailyAvgBill').innerHTML = formatCurrency(avgBill);
+            
+            // Update Reports tab
+            document.getElementById('reportDate').textContent = dailySales.date;
+            document.getElementById('reportTotalBills').textContent = dailySales.totalBills;
+            document.getElementById('reportTotalItems').textContent = dailySales.totalItems;
+            document.getElementById('reportTotalIncome').innerHTML = formatCurrency(dailySales.totalIncome);
+            document.getElementById('reportAvgBill').innerHTML = formatCurrency(avgBill);
+            
+            // Update bills list
+            const billsList = document.getElementById('billsList');
+            if (dailySales.bills.length === 0) {
+                billsList.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">No bills yet today</td></tr>';
+            } else {
+                billsList.innerHTML = dailySales.bills.slice().reverse().map(bill => `
+                    <tr>
+                        <td>${bill.billNumber}</td>
+                        <td>${bill.time}</td>
+                        <td>${bill.itemCount}</td>
+                        <td>${formatCurrency(bill.total)}</td>
+                        <td>${bill.cashier}</td>
+                    </tr>
+                `).join('');
+            }
+        }
+        
+        function addBillToReport(billData) {
+            dailySales.totalIncome += billData.grandTotal;
+            dailySales.totalBills++;
+            dailySales.totalItems += billData.items.reduce((sum, item) => sum + item.quantity, 0);
+            dailySales.bills.push({
+                billNumber: billData.billNumber,
+                time: new Date().toLocaleTimeString(),
+                itemCount: billData.items.reduce((sum, item) => sum + item.quantity, 0),
+                total: billData.grandTotal,
+                cashier: billData.cashier
+            });
+            saveDailySales();
+        }
+        
+        function resetDailyReport() {
+            showConfirm('Reset Report', 'Are you sure you want to reset today\'s sales report? This cannot be undone!', function(confirmed) {
+                if (confirmed) {
+                    dailySales = {
+                        date: new Date().toDateString(),
+                        totalIncome: 0,
+                        totalBills: 0,
+                        totalItems: 0,
+                        bills: []
+                    };
+                    saveDailySales();
+                    showMessage('Report Reset', 'Today\'s sales report has been reset.', 'success');
+                }
+            });
+        }
+
+        // Load current user's inventory
+        function loadUserInventory() {
+            if (currentUser) {
+                inventory = currentUser.inventory || [];
+                if (inventory.length > 0) {
+                    nextId = Math.max(...inventory.map(i => i.id), 0) + 1;
+                } else {
+                    nextId = 1;
+                }
+                displayInventory();
+                updateStats();
+                displayProducts();
+            }
+        }
+
+        function saveCurrentUserInventory() {
+            if (currentUser) {
+                currentUser.inventory = inventory;
+                currentUser.nextId = nextId;
+                const userIndex = users.findIndex(u => u.id === currentUser.id);
+                if (userIndex !== -1) {
+                    users[userIndex] = currentUser;
+                    saveUsers();
+                }
+            }
+        }
+
+        // Authentication functions
+        function register() {
+            const name = document.getElementById('regName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const password = document.getElementById('regPassword').value;
+
+            if (!name || !email || !password) {
+                showMessage('Registration Failed', 'Please fill all fields', 'error');
+                return;
+            }
+
+            if (users.find(u => u.email === email)) {
+                showMessage('Registration Failed', 'Email already exists!', 'error');
+                return;
+            }
+
+            const newUser = {
+                id: users.length + 1,
+                name: name,
+                email: email,
+                password: password,
+                inventory: [],
+                nextId: 1,
+                dailySales: null
+            };
+
+            users.push(newUser);
+            saveUsers();
+            showMessage('Registration Successful', 'Your account has been created! Please login.', 'success');
+            showLogin();
+        }
+
+        function login() {
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+
+            if (!email || !password) {
+                showMessage('Login Failed', 'Please enter email and password', 'error');
+                return;
+            }
+
+            const user = users.find(u => u.email === email && u.password === password);
+            
+            if (user) {
+                currentUser = user;
+                localStorage.setItem('currentUser', JSON.stringify({id: user.id, email: user.email}));
+                inventory = user.inventory || [];
+                nextId = user.nextId || 1;
+                cart = [];
+                
+                document.getElementById('authSection').style.display = 'none';
+                document.getElementById('mainApp').style.display = 'block';
+                document.getElementById('userNameDisplay').textContent = user.name;
+                
+                loadUserInventory();
+                loadDailySales();
+                displayCart();
+                showMessage('Welcome ' + user.name + '!', 'You have successfully logged in.', 'success');
+            } else {
+                showMessage('Login Failed', 'Invalid email or password!', 'error');
+            }
+        }
+
+        function logout() {
+            showConfirm('Logout', 'Are you sure you want to logout?', function(confirmed) {
+                if (confirmed) {
+                    currentUser = null;
+                    localStorage.removeItem('currentUser');
+                    document.getElementById('authSection').style.display = 'block';
+                    document.getElementById('mainApp').style.display = 'none';
+                    document.getElementById('loginEmail').value = '';
+                    document.getElementById('loginPassword').value = '';
+                    showMessage('Logged Out', 'You have been logged out successfully.', 'info');
+                }
+            });
+        }
+
+        function showRegister() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('authTitle').textContent = '📝 Register';
+        }
+
+        function showLogin() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('authTitle').textContent = '🔐 Login';
+        }
+
+        // Check for saved session
+        function checkSession() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                const userData = JSON.parse(savedUser);
+                const user = users.find(u => u.id === userData.id);
+                if (user) {
+                    currentUser = user;
+                    inventory = user.inventory || [];
+                    nextId = user.nextId || 1;
+                    document.getElementById('authSection').style.display = 'none';
+                    document.getElementById('mainApp').style.display = 'block';
+                    document.getElementById('userNameDisplay').textContent = user.name;
+                    loadUserInventory();
+                    loadDailySales();
+                    displayCart();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        // App Functions
         function switchTab(tab) {
             document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             if (tab === 'pos') {
                 document.getElementById('posTab').classList.add('active');
-                document.querySelector('.tab-btn').classList.add('active');
-                refreshPOS();
-            } else {
+                document.querySelectorAll('.tab-btn')[0].classList.add('active');
+                displayProducts();
+                displayCart();
+            } else if (tab === 'inventory') {
                 document.getElementById('inventoryTab').classList.add('active');
                 document.querySelectorAll('.tab-btn')[1].classList.add('active');
+            } else if (tab === 'reports') {
+                document.getElementById('reportsTab').classList.add('active');
+                document.querySelectorAll('.tab-btn')[2].classList.add('active');
+                updateDailyReportDisplay();
             }
         }
-
-        function refreshPOS() { loadInventory(); displayProducts(); displayCart(); }
-
-        function loadInventory() {
-            const saved = localStorage.getItem('clothInventory');
-            if (saved) {
-                inventory = JSON.parse(saved);
-                if (inventory.length > 0) nextId = Math.max(...inventory.map(i => i.id)) + 1;
-            } else {
-                // Sample data with Sri Lankan Rupee prices
-                inventory = [
-                    {id:1, name:"Cotton T-Shirt", category:"Shirts", size:"M", price:2990, quantity:50},
-                    {id:2, name:"Blue Jeans", category:"Pants", size:"L", price:5990, quantity:30},
-                    {id:3, name:"Summer Dress", category:"Dresses", size:"S", price:4990, quantity:25},
-                    {id:4, name:"Leather Jacket", category:"Jackets", size:"XL", price:9990, quantity:15},
-                    {id:5, name:"Sunglasses", category:"Accessories", size:"One Size", price:1990, quantity:40}
-                ];
-                nextId = 6;
-                saveInventory();
-            }
-            displayInventory(); updateStats();
-        }
-
-        function saveInventory() { localStorage.setItem('clothInventory', JSON.stringify(inventory)); }
 
         function formatCurrency(amount) {
             return 'Rs ' + amount.toFixed(2);
@@ -712,7 +1447,10 @@
             let filtered = inventory.filter(i => !search || i.name.toLowerCase().includes(search) || i.category.toLowerCase().includes(search));
             const grid = document.getElementById('productsGrid');
             if (!grid) return;
-            if (filtered.length === 0) { grid.innerHTML = '<p style="text-align:center; padding:20px;">No products found</p>'; return; }
+            if (filtered.length === 0) {
+                grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div><p>No products yet.<br>Go to Inventory tab to add your first product!</p></div>';
+                return;
+            }
             grid.innerHTML = filtered.map(i => `
                 <div class="product-card" onclick="addToCart(${i.id})">
                     <div class="product-info">
@@ -727,15 +1465,20 @@
             `).join('');
         }
 
-        function searchProducts() { displayProducts(document.getElementById('searchProduct').value.toLowerCase()); }
+        function searchProducts() {
+            displayProducts(document.getElementById('searchProduct').value.toLowerCase());
+        }
 
         function addToCart(id) {
             const p = inventory.find(i => i.id === id);
-            if (!p || p.quantity <= 0) { alert('Out of stock!'); return; }
+            if (!p || p.quantity <= 0) { 
+                showMessage('Out of Stock', 'This product is currently out of stock!', 'warning');
+                return; 
+            }
             const existing = cart.find(i => i.id === id);
             if (existing) {
                 if (existing.quantity + 1 <= p.quantity) existing.quantity++;
-                else alert('Not enough stock!');
+                else showMessage('Stock Limit', 'Not enough stock available!', 'warning');
             } else cart.push({id:p.id, name:p.name, size:p.size, price:p.price, quantity:1, maxStock:p.quantity});
             displayCart();
         }
@@ -745,7 +1488,7 @@
             const invItem = inventory.find(i => i.id === id);
             if (cartItem && invItem) {
                 if (qty > 0 && qty <= invItem.quantity) cartItem.quantity = qty;
-                else if (qty > invItem.quantity) alert('Not enough stock!');
+                else if (qty > invItem.quantity) showMessage('Stock Limit', 'Not enough stock available!', 'warning');
                 else if (qty <= 0) cart = cart.filter(i => i.id !== id);
                 displayCart();
             }
@@ -757,9 +1500,10 @@
             const cartDiv = document.getElementById('cartItems');
             if (!cartDiv) return;
             if (cart.length === 0) {
-                cartDiv.innerHTML = '<p style="text-align:center; padding:20px; color:#999;">🛒 Cart is empty</p>';
+                cartDiv.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🛒</div><p>Cart is empty</p></div>';
                 document.getElementById('cartTotal').innerHTML = 'Total: Rs 0.00';
                 document.getElementById('cartCount').innerHTML = '0';
+                document.getElementById('cartTotalDisplay').innerHTML = 'Rs 0';
                 return;
             }
             let html = '<table class="cart-table"><thead><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr></thead><tbody>';
@@ -778,60 +1522,165 @@
             cartDiv.innerHTML = html;
             document.getElementById('cartTotal').innerHTML = `Total: ${formatCurrency(total)}`;
             document.getElementById('cartCount').innerHTML = cart.reduce((s, i) => s + i.quantity, 0);
+            document.getElementById('cartTotalDisplay').innerHTML = formatCurrency(total);
         }
 
+        // Generate Bill HTML
+        function generateBillHTML(billData) {
+            return `
+                <div class="bill-for-display">
+                    <div class="bill-header">
+                        <div class="bill-store-name">👕 CLOTH STORE</div>
+                        <div class="bill-address">123 Galle Road, Colombo 03</div>
+                        <div class="bill-address">Tel: +94 11 234 5678</div>
+                        <div class="bill-divider"></div>
+                        <div>Bill #: ${billData.billNumber}</div>
+                        <div>Date: ${billData.date}</div>
+                        <div>Time: ${billData.time}</div>
+                        <div>Cashier: ${billData.cashier}</div>
+                        <div class="bill-divider"></div>
+                    </div>
+                    
+                    <div class="bill-items">
+                        <div class="bill-row" style="font-weight: bold;">
+                            <span class="bill-item-name">Item</span>
+                            <span class="bill-item-qty">Qty</span>
+                            <span class="bill-item-price">Price</span>
+                            <span class="bill-item-total">Total</span>
+                        </div>
+                        <div class="bill-divider"></div>
+                        ${billData.items.map(item => `
+                            <div class="bill-item">
+                                <span class="bill-item-name">${item.name} (${item.size})</span>
+                                <span class="bill-item-qty">${item.quantity}</span>
+                                <span class="bill-item-price">${formatCurrency(item.price)}</span>
+                                <span class="bill-item-total">${formatCurrency(item.total)}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                    
+                    <div class="bill-divider"></div>
+                    
+                    <div class="bill-total">
+                        <div class="bill-row">
+                            <span>Subtotal:</span>
+                            <span>${formatCurrency(billData.subtotal)}</span>
+                        </div>
+                        <div class="bill-row">
+                            <span>Tax (10%):</span>
+                            <span>${formatCurrency(billData.tax)}</span>
+                        </div>
+                        <div class="bill-row" style="font-weight: bold; font-size: 14px;">
+                            <span>GRAND TOTAL:</span>
+                            <span>${formatCurrency(billData.grandTotal)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bill-divider"></div>
+                    
+                    <div class="bill-footer">
+                        <div>Thank you for shopping!</div>
+                        <div>Ayubowan! 🇱🇰</div>
+                        <div class="bill-divider"></div>
+                        <div style="font-size: 10px;">** No returns after 7 days **</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Show Bill Modal
+        function showBillModal(billData) {
+            const billHTML = generateBillHTML(billData);
+            document.getElementById('billDisplay').innerHTML = billHTML;
+            document.getElementById('billModal').style.display = 'flex';
+            currentBillData = billData;
+        }
+
+        // Close Bill Modal
+        function closeBillModal() {
+            document.getElementById('billModal').style.display = 'none';
+            currentBillData = null;
+        }
+
+        // Print Bill from Modal
+        function printBillFromModal() {
+            if (currentBillData) {
+                const printContainer = document.getElementById('printContainer');
+                const billHTML = generateBillHTML(currentBillData);
+                printContainer.innerHTML = billHTML;
+                
+                setTimeout(() => {
+                    window.print();
+                    printContainer.innerHTML = '';
+                }, 100);
+            }
+        }
+
+        // Checkout Function
         function checkout() {
-            if (cart.length === 0) { alert('Cart is empty!'); return; }
+            if (cart.length === 0) { 
+                showMessage('Empty Cart', 'Your cart is empty. Add some products first!', 'warning');
+                return; 
+            }
+            
             let subtotal = 0;
             cart.forEach(c => {
                 const inv = inventory.find(i => i.id === c.id);
-                if (inv) { inv.quantity -= c.quantity; subtotal += c.price * c.quantity; }
+                if (inv) { 
+                    inv.quantity -= c.quantity; 
+                    subtotal += c.price * c.quantity; 
+                }
             });
-            todaySales += subtotal;
-            document.getElementById('todaySales').innerHTML = formatCurrency(todaySales);
-            saveInventory();
-            const bill = `BILL-${Date.now()}`, date = new Date().toLocaleString('en-LK', { timeZone: 'Asia/Colombo' });
-            const tax = subtotal * 0.1;
-            const grand = subtotal + tax;
-            let html = `<div class="bill-header">
-                            <h3>👕 CLOTH STORE</h3>
-                            <p>123 Galle Road, Colombo 03, Sri Lanka</p>
-                            <p>Tel: +94 11 234 5678</p>
-                            <p><strong>Bill #: ${bill}</strong></p>
-                            <p>Date: ${date}</p>
-                        </div>
-                        <div class="bill-items">
-                            <h4>Items Purchased:</h4>
-                            ${cart.map(i => `<div class="bill-item"><span>${i.name} (${i.size}) x ${i.quantity}</span><span>${formatCurrency(i.price * i.quantity)}</span></div>`).join('')}
-                        </div>
-                        <div class="bill-total">
-                            <div class="bill-item"><span>Subtotal:</span><span>${formatCurrency(subtotal)}</span></div>
-                            <div class="bill-item"><span>Tax (10%):</span><span>${formatCurrency(tax)}</span></div>
-                            <div class="bill-item"><span><strong>Grand Total:</strong></span><span><strong>${formatCurrency(grand)}</strong></span></div>
-                        </div>
-                        <div style="text-align:center; margin-top:20px;">
-                            <p>Thank you for shopping with us! ❤️</p>
-                            <p>Returns accepted within 7 days</p>
-                            <p>🇱🇰 Ayubowan!</p>
-                        </div>`;
-            document.getElementById('billContent').innerHTML = html;
-            document.getElementById('billModal').style.display = 'flex';
+            
+            saveCurrentUserInventory();
+            
+            const now = new Date();
+            const billData = {
+                billNumber: 'BILL-' + now.getTime(),
+                date: now.toLocaleDateString('en-LK', { timeZone: 'Asia/Colombo' }),
+                time: now.toLocaleTimeString('en-LK', { timeZone: 'Asia/Colombo' }),
+                cashier: currentUser.name,
+                items: cart.map(i => ({
+                    name: i.name,
+                    size: i.size,
+                    quantity: i.quantity,
+                    price: i.price,
+                    total: i.price * i.quantity
+                })),
+                subtotal: subtotal,
+                tax: subtotal * 0.1,
+                grandTotal: subtotal * 1.1
+            };
+            
+            // Add to daily report
+            addBillToReport(billData);
+            
+            // Clear cart
             cart = [];
-            displayCart(); displayProducts(); displayInventory(); updateStats();
+            displayCart(); 
+            displayProducts(); 
+            displayInventory(); 
+            updateStats();
+            
+            // Show bill
+            showBillModal(billData);
+            
+            showMessage('Checkout Complete', 'Your bill has been generated!', 'success');
         }
 
-        function clearCart() { if (confirm('Clear cart?')) { cart = []; displayCart(); } }
-        
-        function printBill() { 
-            const printContent = document.getElementById('billContent').innerHTML; 
-            const originalContent = document.body.innerHTML; 
-            document.body.innerHTML = printContent; 
-            window.print(); 
-            document.body.innerHTML = originalContent; 
-            location.reload(); 
+        function clearCart() { 
+            if (cart.length === 0) {
+                showMessage('Cart Empty', 'Nothing to clear!', 'info');
+                return;
+            }
+            showConfirm('Clear Cart', 'Are you sure you want to remove all items from cart?', function(confirmed) {
+                if (confirmed) {
+                    cart = []; 
+                    displayCart();
+                    showMessage('Cart Cleared', 'All items have been removed from your cart.', 'success');
+                }
+            });
         }
-        
-        function closeModal() { document.getElementById('billModal').style.display = 'none'; }
 
         function saveProduct() {
             const name = document.getElementById('productName').value.trim();
@@ -839,19 +1688,32 @@
             const size = document.getElementById('size').value;
             const price = parseFloat(document.getElementById('price').value);
             const quantity = parseInt(document.getElementById('quantity').value);
-            if (!name) { alert('Please enter product name'); return; }
-            if (isNaN(price) || price <= 0) { alert('Please enter valid price in Rupees'); return; }
-            if (isNaN(quantity) || quantity < 0) { alert('Please enter valid quantity'); return; }
+            
+            if (!name) { 
+                showMessage('Missing Info', 'Please enter product name', 'warning');
+                return; 
+            }
+            if (isNaN(price) || price <= 0) { 
+                showMessage('Invalid Price', 'Please enter a valid price in Rupees', 'error');
+                return; 
+            }
+            if (isNaN(quantity) || quantity < 0) { 
+                showMessage('Invalid Quantity', 'Please enter a valid quantity', 'error');
+                return; 
+            }
+            
             if (editMode) {
                 const idx = inventory.findIndex(i => i.id === editId);
                 if (idx !== -1) inventory[idx] = { ...inventory[idx], name, category, size, price, quantity };
                 editMode = false; editId = null;
                 document.getElementById('formTitle').innerHTML = '➕ Add New Product';
+                showMessage('Product Updated', 'Product has been updated successfully!', 'success');
             } else {
                 inventory.push({ id: nextId++, name, category, size, price, quantity });
+                showMessage('Product Added', 'New product has been added to your inventory!', 'success');
             }
-            saveInventory(); displayInventory(); updateStats(); displayProducts(); clearForm();
-            showSuccessMessage('✓ Product saved successfully!');
+            saveCurrentUserInventory();
+            displayInventory(); updateStats(); displayProducts(); clearForm();
         }
 
         function editProduct(id) {
@@ -866,39 +1728,47 @@
                 document.getElementById('formTitle').innerHTML = '✏️ Edit Product';
                 switchTab('inventory');
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                showMessage('Edit Mode', 'You are now editing this product.', 'info');
             }
         }
 
-        function cancelEdit() { editMode = false; editId = null; clearForm(); document.getElementById('formTitle').innerHTML = '➕ Add New Product'; showSuccessMessage('✓ Edit cancelled'); }
+        function cancelEdit() { 
+            editMode = false; editId = null; clearForm(); 
+            document.getElementById('formTitle').innerHTML = '➕ Add New Product'; 
+            showMessage('Cancelled', 'Edit has been cancelled.', 'info'); 
+        }
         
         function deleteProduct(id) { 
-            if (confirm('Delete this product?')) { 
-                inventory = inventory.filter(i => i.id !== id); 
-                saveInventory(); displayInventory(); updateStats(); displayProducts(); 
-                showSuccessMessage('✓ Product deleted!'); 
-                if (editMode && editId === id) cancelEdit(); 
-            } 
+            showConfirm('Delete Product', 'Are you sure you want to delete this product?', function(confirmed) {
+                if (confirmed) {
+                    inventory = inventory.filter(i => i.id !== id); 
+                    saveCurrentUserInventory();
+                    displayInventory(); updateStats(); displayProducts(); 
+                    showMessage('Product Deleted', 'Product has been removed from inventory.', 'success'); 
+                    if (editMode && editId === id) cancelEdit(); 
+                }
+            });
         }
         
         function searchInventory() { displayInventory(document.getElementById('searchInventory').value.toLowerCase()); }
         
         function displayInventory(search = '') {
-            let filtered = inventory.filter(i => !search || i.name.toLowerCase().includes(search) || i.category.toLowerCase().includes(search) || i.size.toLowerCase().includes(search));
+            let filtered = inventory.filter(i => !search || i.name.toLowerCase().includes(search) || i.category.toLowerCase().includes(search));
             const tbody = document.getElementById('inventoryBody');
             if (!tbody) return;
-            if (filtered.length === 0) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px;">No products found</td></tr>'; return; }
+            if (filtered.length === 0) { 
+                tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><div class="empty-state-icon">📦</div><p>No products yet.<br>Add your first product using the form above!</p></td></tr>'; 
+                return; 
+            }
             tbody.innerHTML = filtered.map(i => `<tr>
                 <td>${i.id}</td>
-                <td>
-                    <div class="product-name-cell">${i.name}</div>
-                    <div class="product-category">${i.category}</div>
-                </td>
+                <td><div class="product-name-cell">${i.name}</div><div class="product-category">${i.category}</div></td>
                 <td><span class="badge">${i.size}</span></td>
                 <td><strong>${formatCurrency(i.price)}</strong></td>
                 <td class="${i.quantity < 5 ? 'low-stock' : ''}"><strong>${i.quantity}</strong> ${i.quantity < 5 ? '<span class="badge badge-warning">⚠️ Low</span>' : ''}</td>
                 <td class="action-buttons">
-                    <button class="btn-small btn-edit" onclick="editProduct(${i.id})" title="Edit">✏️ Edit</button>
-                    <button class="btn-small btn-delete" onclick="deleteProduct(${i.id})" title="Delete">🗑️ Delete</button>
+                    <button class="btn-small btn-edit" onclick="editProduct(${i.id})">✏️ Edit</button>
+                    <button class="btn-small btn-delete" onclick="deleteProduct(${i.id})">🗑️ Delete</button>
                 </td>
             </tr>`).join('');
         }
@@ -918,14 +1788,12 @@
             document.getElementById('size').value = 'M';
         }
 
-        function showSuccessMessage(msg) {
-            const div = document.getElementById('successMsg');
-            div.textContent = msg;
-            div.style.display = 'block';
-            setTimeout(() => div.style.display = 'none', 2000);
+        // Initialize
+        loadUsers();
+        if (!checkSession()) {
+            document.getElementById('authSection').style.display = 'block';
+            document.getElementById('mainApp').style.display = 'none';
         }
-
-        loadInventory();
     </script>
 </body>
 </html>
