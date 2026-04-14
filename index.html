@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#667eea">
-    <title>Cloth Store - POS & Inventory System</title>
+    <title>Cloth Store - POS & Inventory (Sri Lankan Rupees)</title>
     <style>
         * {
             margin: 0;
@@ -49,6 +49,15 @@
             justify-content: center;
             gap: 10px;
             flex-wrap: wrap;
+        }
+
+        .currency-badge {
+            background: #ffc107;
+            color: #333;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
         }
 
         @media (min-width: 768px) {
@@ -370,7 +379,7 @@
             border-top: 2px solid #667eea;
         }
 
-        /* Inventory Table - Improved */
+        /* Inventory Table */
         .inventory-table {
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
@@ -519,12 +528,19 @@
             background: #ffc107;
             color: #333;
         }
+
+        .rupee-sign {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1>👕 Cloth Store <span style="font-size: 0.8rem;">POS & Inventory</span></h1>
+            <h1>
+                👕 Cloth Store 
+                <span class="currency-badge">🇱🇰 Sri Lankan Rupees (Rs)</span>
+            </h1>
         </div>
 
         <div class="tabs">
@@ -537,7 +553,7 @@
             <div class="stats">
                 <div class="stat-card">
                     <h3>Today's Sales</h3>
-                    <div class="value" id="todaySales">$0</div>
+                    <div class="value" id="todaySales">Rs 0</div>
                 </div>
                 <div class="stat-card">
                     <h3>Cart Items</h3>
@@ -557,7 +573,7 @@
                 <div class="card">
                     <h2>🛒 Shopping Cart</h2>
                     <div id="cartItems"></div>
-                    <div class="cart-total" id="cartTotal">Total: $0.00</div>
+                    <div class="cart-total" id="cartTotal">Total: Rs 0.00</div>
                     <div class="button-group">
                         <button class="btn-primary" onclick="checkout()">💳 Checkout</button>
                         <button class="btn-secondary" onclick="clearCart()">🗑️ Clear</button>
@@ -573,7 +589,7 @@
             <div class="stats">
                 <div class="stat-card"><h3>📦 Total Products</h3><div class="value" id="totalProducts">0</div></div>
                 <div class="stat-card"><h3>📊 Total Stock</h3><div class="value" id="totalStock">0</div></div>
-                <div class="stat-card"><h3>💰 Inventory Value</h3><div class="value" id="totalValue">$0</div></div>
+                <div class="stat-card"><h3>💰 Inventory Value</h3><div class="value" id="totalValue">Rs 0</div></div>
                 <div class="stat-card"><h3>⚠️ Low Stock</h3><div class="value" id="lowStock">0</div></div>
             </div>
 
@@ -602,7 +618,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>💰 Price ($)</label>
+                        <label>💰 Price (Rs)</label>
                         <input type="number" id="price" placeholder="0.00" step="0.01">
                     </div>
                     <div class="form-group">
@@ -628,7 +644,7 @@
                                 <th>ID</th>
                                 <th>Product Name</th>
                                 <th>Size</th>
-                                <th>Price</th>
+                                <th>Price (Rs)</th>
                                 <th>Stock</th>
                                 <th>Actions</th>
                             </tr>
@@ -673,12 +689,13 @@
                 inventory = JSON.parse(saved);
                 if (inventory.length > 0) nextId = Math.max(...inventory.map(i => i.id)) + 1;
             } else {
+                // Sample data with Sri Lankan Rupee prices
                 inventory = [
-                    {id:1, name:"Cotton T-Shirt", category:"Shirts", size:"M", price:29.99, quantity:50},
-                    {id:2, name:"Blue Jeans", category:"Pants", size:"L", price:59.99, quantity:30},
-                    {id:3, name:"Summer Dress", category:"Dresses", size:"S", price:49.99, quantity:25},
-                    {id:4, name:"Leather Jacket", category:"Jackets", size:"XL", price:99.99, quantity:15},
-                    {id:5, name:"Sunglasses", category:"Accessories", size:"One Size", price:19.99, quantity:40}
+                    {id:1, name:"Cotton T-Shirt", category:"Shirts", size:"M", price:2990, quantity:50},
+                    {id:2, name:"Blue Jeans", category:"Pants", size:"L", price:5990, quantity:30},
+                    {id:3, name:"Summer Dress", category:"Dresses", size:"S", price:4990, quantity:25},
+                    {id:4, name:"Leather Jacket", category:"Jackets", size:"XL", price:9990, quantity:15},
+                    {id:5, name:"Sunglasses", category:"Accessories", size:"One Size", price:1990, quantity:40}
                 ];
                 nextId = 6;
                 saveInventory();
@@ -687,6 +704,10 @@
         }
 
         function saveInventory() { localStorage.setItem('clothInventory', JSON.stringify(inventory)); }
+
+        function formatCurrency(amount) {
+            return 'Rs ' + amount.toFixed(2);
+        }
 
         function displayProducts(search = '') {
             let filtered = inventory.filter(i => !search || i.name.toLowerCase().includes(search) || i.category.toLowerCase().includes(search));
@@ -700,7 +721,7 @@
                         <p>${i.category} | ${i.size}</p>
                     </div>
                     <div class="product-price">
-                        <div class="price">$${i.price.toFixed(2)}</div>
+                        <div class="price">${formatCurrency(i.price)}</div>
                         <div class="stock">📦 ${i.quantity}</div>
                     </div>
                 </div>
@@ -738,7 +759,7 @@
             if (!cartDiv) return;
             if (cart.length === 0) {
                 cartDiv.innerHTML = '<p style="text-align:center; padding:20px; color:#999;">🛒 Cart is empty</p>';
-                document.getElementById('cartTotal').innerHTML = 'Total: $0.00';
+                document.getElementById('cartTotal').innerHTML = 'Total: Rs 0.00';
                 document.getElementById('cartCount').innerHTML = '0';
                 return;
             }
@@ -750,13 +771,13 @@
                 html += `<tr>
                     <td><strong>${i.name}</strong><br><small>${i.size}</small></td>
                     <td><input type="number" class="quantity-input" value="${i.quantity}" min="1" max="${i.maxStock}" onchange="updateCartQuantity(${i.id}, this.value)"></td>
-                    <td><strong>$${itemTotal.toFixed(2)}</strong></td>
+                    <td><strong>${formatCurrency(itemTotal)}</strong></td>
                     <td><button class="btn-remove" onclick="removeFromCart(${i.id})">🗑️</button></td>
                 </tr>`;
             });
             html += '</tbody></table>';
             cartDiv.innerHTML = html;
-            document.getElementById('cartTotal').innerHTML = `Total: $${total.toFixed(2)}`;
+            document.getElementById('cartTotal').innerHTML = `Total: ${formatCurrency(total)}`;
             document.getElementById('cartCount').innerHTML = cart.reduce((s, i) => s + i.quantity, 0);
         }
 
@@ -768,13 +789,32 @@
                 if (inv) { inv.quantity -= c.quantity; subtotal += c.price * c.quantity; }
             });
             todaySales += subtotal;
-            document.getElementById('todaySales').innerHTML = `$${todaySales.toFixed(2)}`;
+            document.getElementById('todaySales').innerHTML = formatCurrency(todaySales);
             saveInventory();
-            const bill = `BILL-${Date.now()}`, date = new Date().toLocaleString(), tax = subtotal * 0.1, grand = subtotal + tax;
-            let html = `<div class="bill-header"><h3>👕 CLOTH STORE</h3><p>123 Fashion Street, NY</p><p><strong>Bill: ${bill}</strong></p><p>${date}</p></div>
-                       <div class="bill-items"><h4>Items:</h4>${cart.map(i => `<div class="bill-item"><span>${i.name} (${i.size}) x ${i.quantity}</span><span>$${(i.price * i.quantity).toFixed(2)}</span></div>`).join('')}</div>
-                       <div class="bill-total"><div>Subtotal: $${subtotal.toFixed(2)}</div><div>Tax (10%): $${tax.toFixed(2)}</div><div><strong>Grand Total: $${grand.toFixed(2)}</strong></div></div>
-                       <div style="text-align:center; margin-top:20px;"><p>Thank you for shopping! ❤️</p><p>Returns accepted within 7 days</p></div>`;
+            const bill = `BILL-${Date.now()}`, date = new Date().toLocaleString('en-LK', { timeZone: 'Asia/Colombo' });
+            const tax = subtotal * 0.1;
+            const grand = subtotal + tax;
+            let html = `<div class="bill-header">
+                            <h3>👕 CLOTH STORE</h3>
+                            <p>123 Galle Road, Colombo 03, Sri Lanka</p>
+                            <p>Tel: +94 11 234 5678</p>
+                            <p><strong>Bill #: ${bill}</strong></p>
+                            <p>Date: ${date}</p>
+                        </div>
+                        <div class="bill-items">
+                            <h4>Items Purchased:</h4>
+                            ${cart.map(i => `<div class="bill-item"><span>${i.name} (${i.size}) x ${i.quantity}</span><span>${formatCurrency(i.price * i.quantity)}</span></div>`).join('')}
+                        </div>
+                        <div class="bill-total">
+                            <div class="bill-item"><span>Subtotal:</span><span>${formatCurrency(subtotal)}</span></div>
+                            <div class="bill-item"><span>Tax (10%):</span><span>${formatCurrency(tax)}</span></div>
+                            <div class="bill-item"><span><strong>Grand Total:</strong></span><span><strong>${formatCurrency(grand)}</strong></span></div>
+                        </div>
+                        <div style="text-align:center; margin-top:20px;">
+                            <p>Thank you for shopping with us! ❤️</p>
+                            <p>Returns accepted within 7 days</p>
+                            <p>🇱🇰 Ayubowan!</p>
+                        </div>`;
             document.getElementById('billContent').innerHTML = html;
             document.getElementById('billModal').style.display = 'flex';
             cart = [];
@@ -782,7 +822,16 @@
         }
 
         function clearCart() { if (confirm('Clear cart?')) { cart = []; displayCart(); } }
-        function printBill() { const c = document.getElementById('billContent').innerHTML; document.body.innerHTML = c; window.print(); location.reload(); }
+        
+        function printBill() { 
+            const printContent = document.getElementById('billContent').innerHTML; 
+            const originalContent = document.body.innerHTML; 
+            document.body.innerHTML = printContent; 
+            window.print(); 
+            document.body.innerHTML = originalContent; 
+            location.reload(); 
+        }
+        
         function closeModal() { document.getElementById('billModal').style.display = 'none'; }
 
         function saveProduct() {
@@ -792,7 +841,7 @@
             const price = parseFloat(document.getElementById('price').value);
             const quantity = parseInt(document.getElementById('quantity').value);
             if (!name) { alert('Please enter product name'); return; }
-            if (isNaN(price) || price <= 0) { alert('Please enter valid price'); return; }
+            if (isNaN(price) || price <= 0) { alert('Please enter valid price in Rupees'); return; }
             if (isNaN(quantity) || quantity < 0) { alert('Please enter valid quantity'); return; }
             if (editMode) {
                 const idx = inventory.findIndex(i => i.id === editId);
@@ -846,7 +895,7 @@
                     <div class="product-category">${i.category}</div>
                 </td>
                 <td><span class="badge">${i.size}</span></td>
-                <td><strong>$${i.price.toFixed(2)}</strong></td>
+                <td><strong>${formatCurrency(i.price)}</strong></td>
                 <td class="${i.quantity < 5 ? 'low-stock' : ''}"><strong>${i.quantity}</strong> ${i.quantity < 5 ? '<span class="badge badge-warning">⚠️ Low</span>' : ''}</td>
                 <td class="action-buttons">
                     <button class="btn-small btn-edit" onclick="editProduct(${i.id})" title="Edit">✏️ Edit</button>
@@ -858,7 +907,7 @@
         function updateStats() {
             document.getElementById('totalProducts').textContent = inventory.length;
             document.getElementById('totalStock').textContent = inventory.reduce((s,i) => s + i.quantity, 0);
-            document.getElementById('totalValue').textContent = `$${inventory.reduce((s,i) => s + (i.price * i.quantity), 0).toFixed(2)}`;
+            document.getElementById('totalValue').textContent = formatCurrency(inventory.reduce((s,i) => s + (i.price * i.quantity), 0));
             document.getElementById('lowStock').textContent = inventory.filter(i => i.quantity < 5).length;
         }
 
