@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
     <meta name="theme-color" content="#667eea">
-    <title>Cloth Store - POS & Inventory System</title>
+    <title>Shop POS & Inventory System</title>
     <style>
         * {
             margin: 0;
@@ -37,28 +37,25 @@
             }
         }
 
-        /* Print Styles */
         @media print {
             * {
                 margin: 0;
                 padding: 0;
                 box-sizing: border-box;
             }
-            
             body {
                 background: white;
                 padding: 0;
                 margin: 0;
             }
-            
-            .header, .tabs-wrapper, .stats, .card, .button-group, 
-            .logout-btn, .search-box, .action-buttons, .btn-primary, 
+            .header, .tabs-wrapper, .stats, .card, .button-group,
+            .logout-btn, .search-box, .action-buttons, .btn-primary,
             .btn-secondary, .modal, .message-modal, .confirm-modal,
             .tabs, .pos-layout, .products-grid, .cart-wrapper, .inventory-wrapper,
-            #authSection, #mainApp, .daily-report-card, .reset-btn {
+            #authSection, #mainApp, .daily-report-card, .reset-btn,
+            .settings-tab {
                 display: none !important;
             }
-            
             .print-container {
                 display: block !important;
                 position: absolute;
@@ -68,20 +65,17 @@
                 padding: 20px;
                 background: white;
             }
-            
             .bill-for-print {
                 max-width: 300px;
                 margin: 0 auto;
                 font-family: 'Courier New', monospace;
             }
-            
             @page {
                 size: auto;
                 margin: 10mm;
             }
         }
 
-        /* Header */
         .header {
             background: white;
             padding: 12px;
@@ -95,12 +89,26 @@
             gap: 10px;
         }
 
-        .header h1 {
-            color: #667eea;
-            font-size: 1.2rem;
+        .header-left {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+        }
+
+        .header-left .shop-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #f0f0f0;
+            border: 2px solid #667eea;
+            display: block;
+        }
+
+        .header-left .shop-name {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #667eea;
         }
 
         .user-info {
@@ -125,7 +133,7 @@
             min-height: auto;
         }
 
-        /* Custom Message Modal */
+        /* Message Modal */
         .message-modal {
             position: fixed;
             top: 0;
@@ -151,21 +159,11 @@
         }
 
         @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .message-icon {
-            font-size: 50px;
-            margin-bottom: 15px;
-        }
-
+        .message-icon { font-size: 50px; margin-bottom: 15px; }
         .message-icon.success { color: #28a745; }
         .message-icon.error { color: #dc3545; }
         .message-icon.warning { color: #ffc107; }
@@ -177,13 +175,7 @@
             margin-bottom: 10px;
             color: #333;
         }
-
-        .message-text {
-            color: #666;
-            margin-bottom: 20px;
-            line-height: 1.5;
-        }
-
+        .message-text { color: #666; margin-bottom: 20px; line-height: 1.5; }
         .message-btn {
             background: #667eea;
             color: white;
@@ -196,7 +188,7 @@
             min-width: 100px;
         }
 
-        /* Custom Confirm Modal */
+        /* Confirm Modal */
         .confirm-modal {
             position: fixed;
             top: 0;
@@ -250,7 +242,7 @@
             cursor: pointer;
         }
 
-        /* Auth Forms */
+        /* Auth */
         .auth-container {
             display: flex;
             justify-content: center;
@@ -370,7 +362,6 @@
             }
         }
 
-        /* Forms */
         .form-row {
             display: flex;
             flex-direction: column;
@@ -396,7 +387,7 @@
             font-size: 12px;
         }
 
-        input, select {
+        input, select, textarea {
             width: 100%;
             padding: 10px;
             border: 1px solid #ddd;
@@ -475,7 +466,6 @@
             cursor: pointer;
             transition: transform 0.2s;
         }
-        
         .stat-card:hover {
             transform: translateY(-2px);
         }
@@ -506,36 +496,36 @@
             border-radius: 15px;
             margin-bottom: 12px;
         }
-        
+
         .daily-report-card h3 {
             font-size: 14px;
             margin-bottom: 10px;
             opacity: 0.9;
         }
-        
+
         .report-stats {
             display: flex;
             justify-content: space-between;
             gap: 15px;
             flex-wrap: wrap;
         }
-        
+
         .report-item {
             flex: 1;
             text-align: center;
         }
-        
+
         .report-label {
             font-size: 11px;
             opacity: 0.8;
             margin-bottom: 5px;
         }
-        
+
         .report-value {
             font-size: 20px;
             font-weight: bold;
         }
-        
+
         @media (min-width: 768px) {
             .daily-report-card {
                 padding: 20px;
@@ -545,7 +535,6 @@
             }
         }
 
-        /* Products Grid */
         .products-grid {
             display: grid;
             grid-template-columns: 1fr;
@@ -596,7 +585,6 @@
             font-size: 13px;
         }
 
-        /* Cart */
         .cart-wrapper {
             overflow-x: auto;
         }
@@ -635,7 +623,6 @@
             border-top: 2px solid #667eea;
         }
 
-        /* Inventory Table */
         .inventory-wrapper {
             overflow-x: auto;
         }
@@ -706,7 +693,6 @@
             justify-content: center;
         }
 
-        /* Bill Structure */
         .bill-for-display {
             max-width: 300px;
             margin: 0 auto;
@@ -726,6 +712,17 @@
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 5px;
+        }
+
+        .bill-store-logo {
+            max-width: 60px;
+            max-height: 60px;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 8px;
+            border: 2px solid #667eea;
         }
 
         .bill-address {
@@ -755,24 +752,10 @@
             font-size: 11px;
         }
 
-        .bill-item-name {
-            flex: 2;
-        }
-
-        .bill-item-qty {
-            flex: 0.5;
-            text-align: center;
-        }
-
-        .bill-item-price {
-            flex: 0.8;
-            text-align: right;
-        }
-
-        .bill-item-total {
-            flex: 0.8;
-            text-align: right;
-        }
+        .bill-item-name { flex: 2; }
+        .bill-item-qty { flex: 0.5; text-align: center; }
+        .bill-item-price { flex: 0.8; text-align: right; }
+        .bill-item-total { flex: 0.8; text-align: right; }
 
         .bill-total {
             margin-top: 10px;
@@ -820,980 +803,1264 @@
         .print-container {
             display: none;
         }
+
+        /* Settings */
+        .settings-tab .preview-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+            border: 2px dashed #ddd;
+        }
+
+        .settings-tab .preview-box .preview-logo {
+            max-width: 80px;
+            max-height: 80px;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #667eea;
+            margin-bottom: 10px;
+        }
+
+        .settings-tab .preview-box .shop-name-preview {
+            font-size: 20px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .settings-tab .preview-box .shop-address-preview {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .logo-upload-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .logo-upload-wrapper input[type="file"] {
+            flex: 1;
+            padding: 8px;
+        }
+
+        .logo-preview-small {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #667eea;
+            background: white;
+        }
+
+        .report-filter {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-end;
+            margin-bottom: 18px;
+        }
+
+        .report-filter .form-group {
+            flex: 1 1 160px;
+            min-width: 120px;
+        }
+
+        .report-filter button {
+            flex: 0 0 auto;
+            padding: 10px 24px;
+        }
+
+        .bill-history-card {
+            margin-top: 15px;
+        }
+
+        .no-bills {
+            text-align: center;
+            padding: 30px 10px;
+            color: #888;
+        }
+
+        /* Custom categories */
+        .category-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 8px;
+        }
+
+        .category-tag {
+            background: #e9ecef;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            cursor: pointer;
+            border: 1px solid #ddd;
+            transition: all 0.2s;
+        }
+
+        .category-tag:hover {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .category-tag.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+
+        .custom-category-input {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .custom-category-input input {
+            flex: 1;
+        }
+
+        .custom-category-input button {
+            padding: 10px 16px;
+            min-height: 44px;
+            white-space: nowrap;
+        }
     </style>
 </head>
 <body>
-    <div class="container" id="app">
-        <!-- Custom Message Modal -->
-        <div id="customMessageModal" class="message-modal">
-            <div class="message-content">
-                <div class="message-icon" id="messageIcon">✓</div>
-                <div class="message-title" id="messageTitle">Success</div>
-                <div class="message-text" id="messageText">Operation completed successfully!</div>
-                <button class="message-btn" onclick="closeMessageModal()">OK</button>
+<div class="container" id="app">
+    <!-- Message & Confirm Modals -->
+    <div id="customMessageModal" class="message-modal">
+        <div class="message-content">
+            <div class="message-icon" id="messageIcon">✓</div>
+            <div class="message-title" id="messageTitle">Success</div>
+            <div class="message-text" id="messageText">Operation completed.</div>
+            <button class="message-btn" onclick="closeMessageModal()">OK</button>
+        </div>
+    </div>
+    <div id="customConfirmModal" class="confirm-modal">
+        <div class="confirm-content">
+            <div class="message-icon" style="color: #ffc107;">⚠️</div>
+            <div class="message-title" id="confirmTitle">Confirm</div>
+            <div class="message-text" id="confirmText">Are you sure?</div>
+            <div class="confirm-buttons">
+                <button class="confirm-btn-yes" id="confirmYesBtn">Yes</button>
+                <button class="confirm-btn-no" id="confirmNoBtn">No</button>
             </div>
         </div>
+    </div>
 
-        <!-- Custom Confirm Modal -->
-        <div id="customConfirmModal" class="confirm-modal">
-            <div class="confirm-content">
-                <div class="message-icon" style="color: #ffc107;">⚠️</div>
-                <div class="message-title" id="confirmTitle">Confirm Action</div>
-                <div class="message-text" id="confirmText">Are you sure?</div>
-                <div class="confirm-buttons">
-                    <button class="confirm-btn-yes" id="confirmYesBtn">Yes</button>
-                    <button class="confirm-btn-no" id="confirmNoBtn">No</button>
+    <!-- Bill Modal -->
+    <div id="billModal" class="bill-modal">
+        <div class="bill-modal-content">
+            <div id="billDisplay"></div>
+            <div class="bill-actions">
+                <button onclick="printBillFromModal()" style="background:#17a2b8;">🖨️ Print</button>
+                <button onclick="closeBillModal()" style="background:#6c757d;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="printContainer" class="print-container"></div>
+
+    <!-- Auth Section -->
+    <div id="authSection">
+        <div class="auth-container">
+            <div class="auth-card">
+                <h2 id="authTitle">🔐 Login</h2>
+                <div id="loginForm">
+                    <div class="form-group"><label>📧 Email</label><input type="email" id="loginEmail" placeholder="demo@example.com"></div>
+                    <div class="form-group"><label>🔒 Password</label><input type="password" id="loginPassword" placeholder="123456"></div>
+                    <button onclick="login()" style="width:100%; margin-top:15px;">Login</button>
+                    <div class="auth-switch">Don't have an account? <a onclick="showRegister()">Register</a></div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Bill Modal -->
-        <div id="billModal" class="bill-modal">
-            <div class="bill-modal-content">
-                <div id="billDisplay"></div>
-                <div class="bill-actions">
-                    <button onclick="printBillFromModal()" style="background: #17a2b8;">🖨️ Print Bill</button>
-                    <button onclick="closeBillModal()" style="background: #6c757d;">Close</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Hidden Print Container -->
-        <div id="printContainer" class="print-container"></div>
-
-        <!-- Login/Register Section -->
-        <div id="authSection">
-            <div class="auth-container">
-                <div class="auth-card">
-                    <h2 id="authTitle">🔐 Login</h2>
-                    <div id="loginForm">
-                        <div class="form-group">
-                            <label>📧 Email</label>
-                            <input type="email" id="loginEmail" placeholder="Enter your email">
-                        </div>
-                        <div class="form-group">
-                            <label>🔒 Password</label>
-                            <input type="password" id="loginPassword" placeholder="Enter your password">
-                        </div>
-                        <button onclick="login()" style="width:100%; margin-top:15px;">Login</button>
-                        <div class="auth-switch">
-                            Don't have an account? <a onclick="showRegister()">Register here</a>
-                        </div>
-                    </div>
-                    <div id="registerForm" style="display:none;">
-                        <div class="form-group">
-                            <label>👤 Full Name</label>
-                            <input type="text" id="regName" placeholder="Enter your full name">
-                        </div>
-                        <div class="form-group">
-                            <label>📧 Email</label>
-                            <input type="email" id="regEmail" placeholder="Enter your email">
-                        </div>
-                        <div class="form-group">
-                            <label>🔒 Password</label>
-                            <input type="password" id="regPassword" placeholder="Create a password">
-                        </div>
-                        <button onclick="register()" style="width:100%; margin-top:15px;">Register</button>
-                        <div class="auth-switch">
-                            Already have an account? <a onclick="showLogin()">Login here</a>
-                        </div>
-                    </div>
+                <div id="registerForm" style="display:none;">
+                    <div class="form-group"><label>👤 Name</label><input type="text" id="regName" placeholder="Your name"></div>
+                    <div class="form-group"><label>📧 Email</label><input type="email" id="regEmail" placeholder="email@example.com"></div>
+                    <div class="form-group"><label>🔒 Password</label><input type="password" id="regPassword" placeholder="Password"></div>
+                    <button onclick="register()" style="width:100%; margin-top:15px;">Register</button>
+                    <div class="auth-switch">Already have account? <a onclick="showLogin()">Login</a></div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- Main App Section -->
-        <div id="mainApp" style="display:none;">
-            <div class="header">
-                <h1>👕 Cloth Store</h1>
-                <div class="user-info">
-                    <span class="user-name" id="userNameDisplay"></span>
-                    <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+    <!-- Main App -->
+    <div id="mainApp" style="display:none;">
+        <div class="header">
+            <div class="header-left">
+                <img id="headerShopLogo" class="shop-logo" src="" alt="Shop Logo">
+                <span class="shop-name" id="headerShopName">My Shop</span>
+            </div>
+            <div class="user-info">
+                <span class="user-name" id="userNameDisplay"></span>
+                <button class="logout-btn" onclick="logout()">🚪 Logout</button>
+            </div>
+        </div>
+
+        <div class="tabs-wrapper">
+            <div class="tabs">
+                <button class="tab-btn active" onclick="switchTab('pos')">🛒 POS</button>
+                <button class="tab-btn" onclick="switchTab('inventory')">📦 Inventory</button>
+                <button class="tab-btn" onclick="switchTab('reports')">📊 Reports</button>
+                <button class="tab-btn" onclick="switchTab('settings')">⚙️ Settings</button>
+            </div>
+        </div>
+
+        <!-- POS Tab -->
+        <div id="posTab" class="tab-content active">
+            <div class="daily-report-card" onclick="switchTab('reports')" style="cursor:pointer;">
+                <h3>📊 Today's Summary</h3>
+                <div class="report-stats">
+                    <div class="report-item"><div class="report-label">Bills</div><div class="report-value" id="dailyBillsCount">0</div></div>
+                    <div class="report-item"><div class="report-label">Income</div><div class="report-value" id="dailyIncome">Rs 0.00</div></div>
+                    <div class="report-item"><div class="report-label">Avg Bill</div><div class="report-value" id="dailyAvgBill">Rs 0.00</div></div>
                 </div>
+                <div style="text-align:center; margin-top:8px; font-size:10px; opacity:0.7;">👇 Tap for full report</div>
             </div>
 
-            <div class="tabs-wrapper">
-                <div class="tabs">
-                    <button class="tab-btn active" onclick="switchTab('pos')">🛒 POS & Billing</button>
-                    <button class="tab-btn" onclick="switchTab('inventory')">📦 My Inventory</button>
-                    <button class="tab-btn" onclick="switchTab('reports')">📊 Daily Reports</button>
-                </div>
+            <div class="stats">
+                <div class="stat-card"><h3>Cart Items</h3><div class="value" id="cartCount">0</div></div>
+                <div class="stat-card"><h3>Cart Total</h3><div class="value" id="cartTotalDisplay">Rs 0.00</div></div>
             </div>
 
-            <!-- POS Tab -->
-            <div id="posTab" class="tab-content active">
-                <!-- Daily Report Summary on POS -->
-                <div class="daily-report-card" onclick="switchTab('reports')" style="cursor: pointer;">
-                    <h3>📊 Today's Business Summary</h3>
-                    <div class="report-stats">
-                        <div class="report-item">
-                            <div class="report-label">Total Bills</div>
-                            <div class="report-value" id="dailyBillsCount">0</div>
-                        </div>
-                        <div class="report-item">
-                            <div class="report-label">Total Income</div>
-                            <div class="report-value" id="dailyIncome">Rs 0</div>
-                        </div>
-                        <div class="report-item">
-                            <div class="report-label">Avg. Bill Value</div>
-                            <div class="report-value" id="dailyAvgBill">Rs 0</div>
-                        </div>
-                    </div>
-                    <div style="text-align: center; margin-top: 8px; font-size: 10px; opacity: 0.7;">👇 Tap for full report</div>
-                </div>
-
-                <div class="stats">
-                    <div class="stat-card">
-                        <h3>Current Cart Items</h3>
-                        <div class="value" id="cartCount">0</div>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Cart Total</h3>
-                        <div class="value" id="cartTotalDisplay">Rs 0</div>
-                    </div>
-                </div>
-
-                <div class="pos-layout" style="display: flex; flex-direction: column; gap: 12px;">
-                    <div class="card">
-                        <h2>🛍️ Products</h2>
-                        <div class="search-box">
-                            <input type="text" id="searchProduct" placeholder="🔍 Search my products..." onkeyup="searchProducts()">
-                        </div>
-                        <div class="products-grid" id="productsGrid"></div>
-                    </div>
-
-                    <div class="card">
-                        <h2>🛒 Shopping Cart</h2>
-                        <div class="cart-wrapper">
-                            <div id="cartItems"></div>
-                        </div>
-                        <div class="cart-total" id="cartTotal">Total: Rs 0.00</div>
-                        <div class="button-group">
-                            <button class="btn-primary" onclick="checkout()">💳 Checkout</button>
-                            <button class="btn-secondary" onclick="clearCart()">🗑️ Clear</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Inventory Tab -->
-            <div id="inventoryTab" class="tab-content">
-                <div class="stats">
-                    <div class="stat-card"><h3>📦 My Products</h3><div class="value" id="totalProducts">0</div></div>
-                    <div class="stat-card"><h3>📊 Total Stock</h3><div class="value" id="totalStock">0</div></div>
-                    <div class="stat-card"><h3>💰 Inventory Value</h3><div class="value" id="totalValue">Rs 0</div></div>
-                    <div class="stat-card"><h3>⚠️ Low Stock</h3><div class="value" id="lowStock">0</div></div>
-                </div>
-
+            <div class="pos-layout" style="display:flex; flex-direction:column; gap:12px;">
                 <div class="card">
-                    <h2 id="formTitle">➕ Add New Product</h2>
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label>📝 Product Name</label>
-                            <input type="text" id="productName" placeholder="e.g., Cotton T-Shirt">
-                        </div>
-                        <div class="form-group">
-                            <label>🏷️ Category</label>
-                            <select id="category">
-                                <option value="Shirts">👕 Shirts</option>
-                                <option value="Pants">👖 Pants</option>
-                                <option value="Dresses">👗 Dresses</option>
-                                <option value="Jackets">🧥 Jackets</option>
-                                <option value="Accessories">💍 Accessories</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>📏 Size</label>
-                            <select id="size">
-                                <option value="XS">XS</option><option value="S">S</option><option value="M" selected>M</option>
-                                <option value="L">L</option><option value="XL">XL</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label>💰 Price (Rs)</label>
-                            <input type="number" id="price" placeholder="0.00" step="0.01">
-                        </div>
-                        <div class="form-group">
-                            <label>📦 Quantity</label>
-                            <input type="number" id="quantity" placeholder="0">
-                        </div>
-                    </div>
+                    <h2>🛍️ Products</h2>
+                    <div class="search-box"><input type="text" id="searchProduct" placeholder="🔍 Search products..." onkeyup="searchProducts()"></div>
+                    <div class="products-grid" id="productsGrid"></div>
+                </div>
+                <div class="card">
+                    <h2>🛒 Cart</h2>
+                    <div class="cart-wrapper"><div id="cartItems"></div></div>
+                    <div class="cart-total" id="cartTotal">Total: Rs 0.00</div>
                     <div class="button-group">
-                        <button class="btn-save" onclick="saveProduct()">💾 Save Product</button>
-                        <button class="btn-cancel" onclick="cancelEdit()">❌ Cancel</button>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <h2>📋 My Product Inventory</h2>
-                    <div class="search-box">
-                        <input type="text" id="searchInventory" placeholder="🔍 Search my inventory..." onkeyup="searchInventory()">
-                    </div>
-                    <div class="inventory-wrapper">
-                        <table>
-                            <thead>
-                                <tr><th>ID</th><th>Product Name</th><th>Size</th><th>Price (Rs)</th><th>Stock</th><th>Actions</th></tr>
-                            </thead>
-                            <tbody id="inventoryBody"></tbody>
-                        </table>
+                        <button class="btn-primary" onclick="checkout()">💳 Checkout</button>
+                        <button class="btn-secondary" onclick="clearCart()">🗑️ Clear</button>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <!-- Reports Tab -->
-            <div id="reportsTab" class="tab-content">
-                <div class="card">
-                    <h2>📊 Daily Sales Report</h2>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; flex-wrap: wrap; gap: 10px;">
-                        <div>
-                            <strong>Date:</strong> <span id="reportDate"></span>
-                        </div>
-                        <button class="reset-btn" onclick="resetDailyReport()">🔄 Reset Today's Report</button>
+        <!-- Inventory Tab -->
+        <div id="inventoryTab" class="tab-content">
+            <div class="stats">
+                <div class="stat-card"><h3>My Products</h3><div class="value" id="totalProducts">0</div></div>
+                <div class="stat-card"><h3>Total Stock</h3><div class="value" id="totalStock">0</div></div>
+                <div class="stat-card"><h3>Inventory Value</h3><div class="value" id="totalValue">Rs 0.00</div></div>
+                <div class="stat-card"><h3>Low Stock</h3><div class="value" id="lowStock">0</div></div>
+            </div>
+
+            <div class="card">
+                <h2 id="formTitle">➕ Add Product</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>📝 Product Name</label>
+                        <input type="text" id="productName" placeholder="Enter product name">
                     </div>
-                    
-                    <div class="stats" style="margin-bottom: 20px;">
-                        <div class="stat-card">
-                            <h3>Total Bills</h3>
-                            <div class="value" id="reportTotalBills">0</div>
+                    <div class="form-group">
+                        <label>🏷️ Category</label>
+                        <select id="categorySelect">
+                            <option value="General">General</option>
+                            <option value="Electronics">Electronics</option>
+                            <option value="Clothing">Clothing</option>
+                            <option value="Food">Food</option>
+                            <option value="Books">Books</option>
+                            <option value="Other">Other</option>
+                        </select>
+                        <div class="custom-category-input" style="margin-top:6px;">
+                            <input type="text" id="customCategoryInput" placeholder="Or add custom category">
+                            <button onclick="addCustomCategory()" style="padding:8px 12px; min-height:36px; font-size:12px;">Add</button>
                         </div>
-                        <div class="stat-card">
-                            <h3>Total Items Sold</h3>
-                            <div class="value" id="reportTotalItems">0</div>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Total Income</h3>
-                            <div class="value" id="reportTotalIncome">Rs 0</div>
-                        </div>
-                        <div class="stat-card">
-                            <h3>Average Bill</h3>
-                            <div class="value" id="reportAvgBill">Rs 0</div>
-                        </div>
+                        <div class="category-tags" id="categoryTags"></div>
                     </div>
-                    
-                    <h3 style="margin-bottom: 10px;">📋 Bill History</h3>
+                    <div class="form-group">
+                        <label>📏 Unit/SKU</label>
+                        <input type="text" id="sku" placeholder="e.g., Unit, kg, pcs">
+                    </div>
+                    <div class="form-group">
+                        <label>💰 Price</label>
+                        <input type="number" id="price" placeholder="0.00" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label>📦 Quantity</label>
+                        <input type="number" id="quantity" placeholder="0">
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="btn-save" onclick="saveProduct()">💾 Save Product</button>
+                    <button class="btn-cancel" onclick="cancelEdit()">❌ Cancel</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <h2>📋 Product Inventory</h2>
+                <div class="search-box"><input type="text" id="searchInventory" placeholder="🔍 Search inventory..." onkeyup="searchInventory()"></div>
+                <div class="inventory-wrapper"><table><thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Unit</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead><tbody id="inventoryBody"></tbody></table></div>
+            </div>
+        </div>
+
+        <!-- Reports Tab -->
+        <div id="reportsTab" class="tab-content">
+            <div class="card">
+                <h2>📊 Daily Report</h2>
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; flex-wrap:wrap; gap:10px;">
+                    <div><strong>Date:</strong> <span id="reportDate"></span></div>
+                    <button class="reset-btn" onclick="resetDailyReport()">🔄 Reset Today</button>
+                </div>
+
+                <div class="stats" style="margin-bottom:20px;">
+                    <div class="stat-card"><h3>Total Bills</h3><div class="value" id="reportTotalBills">0</div></div>
+                    <div class="stat-card"><h3>Items Sold</h3><div class="value" id="reportTotalItems">0</div></div>
+                    <div class="stat-card"><h3>Income</h3><div class="value" id="reportTotalIncome">Rs 0.00</div></div>
+                    <div class="stat-card"><h3>Avg Bill</h3><div class="value" id="reportAvgBill">Rs 0.00</div></div>
+                </div>
+
+                <div class="report-filter">
+                    <div class="form-group">
+                        <label>📅 From</label>
+                        <input type="date" id="filterDateFrom">
+                    </div>
+                    <div class="form-group">
+                        <label>📅 To</label>
+                        <input type="date" id="filterDateTo">
+                    </div>
+                    <button onclick="generateCustomReport()" style="background:#667eea;">📊 Generate</button>
+                    <button onclick="resetReportFilter()" style="background:#6c757d;">↺ Reset</button>
+                </div>
+
+                <div class="bill-history-card">
+                    <h3 style="margin-bottom:10px;">📋 Bill History</h3>
                     <div class="inventory-wrapper">
                         <table id="billsTable">
-                            <thead>
-                                <tr><th>Bill #</th><th>Time</th><th>Items</th><th>Total</th><th>Cashier</th></tr>
-                            </thead>
+                            <thead><tr><th>Bill #</th><th>Time</th><th>Items</th><th>Total</th><th>Cashier</th></tr></thead>
                             <tbody id="billsList"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- SETTINGS TAB -->
+        <div id="settingsTab" class="tab-content settings-tab">
+            <div class="card">
+                <h2>⚙️ Shop Settings</h2>
+                <p style="color:#666; margin-bottom:15px;">Customize your shop name, address, logo, and currency. Changes appear on bills and the header.</p>
+
+                <div class="form-group">
+                    <label>🏪 Shop Name</label>
+                    <input type="text" id="shopNameInput" placeholder="Enter shop name">
+                </div>
+
+                <div class="form-group">
+                    <label>📍 Shop Address</label>
+                    <input type="text" id="shopAddressInput" placeholder="Enter shop address">
+                </div>
+
+                <div class="form-group">
+                    <label>📞 Phone</label>
+                    <input type="text" id="shopPhoneInput" placeholder="Enter phone number">
+                </div>
+
+                <div class="form-group">
+                    <label>💰 Currency Symbol</label>
+                    <input type="text" id="currencyInput" placeholder="e.g., Rs, $, £" value="Rs">
+                </div>
+
+                <div class="form-group">
+                    <label>🖼️ Shop Logo</label>
+                    <div class="logo-upload-wrapper">
+                        <input type="file" id="logoUpload" accept="image/*" onchange="handleLogoUpload(event)">
+                        <img id="logoPreviewSmall" class="logo-preview-small" src="" alt="Logo preview">
+                        <button onclick="removeLogo()" style="background:#dc3545; padding:8px 16px; min-height:auto;">Remove</button>
+                    </div>
+                    <small style="color:#888; display:block; margin-top:5px;">Recommended: Square image, PNG or JPG</small>
+                </div>
+
+                <div class="preview-box">
+                    <h4 style="margin-bottom:10px;">🔍 Preview</h4>
+                    <img id="previewLogo" class="preview-logo" src="" alt="Logo">
+                    <div class="shop-name-preview" id="previewShopName">My Shop</div>
+                    <div class="shop-address-preview" id="previewShopAddress">123 Main Street</div>
+                    <div class="shop-address-preview" id="previewShopPhone">+94 11 234 5678</div>
+                    <div class="shop-address-preview" id="previewCurrency">Currency: Rs</div>
+                </div>
+
+                <button onclick="saveShopSettings()" style="background:#28a745; width:100%;">💾 Save Settings</button>
+            </div>
+        </div>
     </div>
+</div>
 
-    <script>
-        // Custom Message Box Functions
-        function showMessage(title, message, type = 'success') {
-            const modal = document.getElementById('customMessageModal');
-            const iconEl = document.getElementById('messageIcon');
-            const titleEl = document.getElementById('messageTitle');
-            const textEl = document.getElementById('messageText');
-            
-            let icon = '✓';
-            if (type === 'success') icon = '✓';
-            else if (type === 'error') icon = '✗';
-            else if (type === 'warning') icon = '⚠';
-            else if (type === 'info') icon = 'ℹ';
-            
-            iconEl.textContent = icon;
-            iconEl.className = `message-icon ${type}`;
-            titleEl.textContent = title;
-            textEl.textContent = message;
-            modal.style.display = 'flex';
+<script>
+    // ---------- CORE DATA ----------
+    let users = [];
+    let currentUser = null;
+    let inventory = [];
+    let cart = [];
+    let nextId = 1;
+    let editMode = false;
+    let editId = null;
+    let customCategories = [];
+
+    let dailySales = {
+        date: new Date().toDateString(),
+        totalIncome: 0,
+        totalBills: 0,
+        totalItems: 0,
+        bills: []
+    };
+    let currentBillData = null;
+    let confirmCallback = null;
+
+    // Shop settings
+    let shopSettings = {
+        name: 'My Shop',
+        address: '123 Main Street',
+        phone: '+94 11 234 5678',
+        currency: 'Rs',
+        logo: ''
+    };
+
+    // ---------- MESSAGE / CONFIRM ----------
+    function showMessage(title, message, type = 'success') {
+        const modal = document.getElementById('customMessageModal');
+        const iconEl = document.getElementById('messageIcon');
+        const titleEl = document.getElementById('messageTitle');
+        const textEl = document.getElementById('messageText');
+        let icon = '✓';
+        if (type === 'success') icon = '✓';
+        else if (type === 'error') icon = '✗';
+        else if (type === 'warning') icon = '⚠';
+        else if (type === 'info') icon = 'ℹ';
+        iconEl.textContent = icon;
+        iconEl.className = `message-icon ${type}`;
+        titleEl.textContent = title;
+        textEl.textContent = message;
+        modal.style.display = 'flex';
+    }
+
+    function closeMessageModal() {
+        document.getElementById('customMessageModal').style.display = 'none';
+    }
+
+    function showConfirm(title, message, callback) {
+        const modal = document.getElementById('customConfirmModal');
+        document.getElementById('confirmTitle').textContent = title;
+        document.getElementById('confirmText').textContent = message;
+        confirmCallback = callback;
+        modal.style.display = 'flex';
+    }
+
+    function closeConfirmModal() {
+        document.getElementById('customConfirmModal').style.display = 'none';
+        confirmCallback = null;
+    }
+
+    document.getElementById('confirmYesBtn').onclick = function() {
+        if (confirmCallback) confirmCallback(true);
+        closeConfirmModal();
+    };
+    document.getElementById('confirmNoBtn').onclick = function() {
+        if (confirmCallback) confirmCallback(false);
+        closeConfirmModal();
+    };
+
+    // ---------- CATEGORY MANAGEMENT ----------
+    function addCustomCategory() {
+        const input = document.getElementById('customCategoryInput');
+        const category = input.value.trim();
+        if (!category) {
+            showMessage('Error', 'Please enter a category name.', 'error');
+            return;
+        }
+        if (!customCategories.includes(category)) {
+            customCategories.push(category);
+            updateCategoryTags();
+            const select = document.getElementById('categorySelect');
+            const option = document.createElement('option');
+            option.value = category;
+            option.textContent = category;
+            select.appendChild(option);
+            input.value = '';
+            localStorage.setItem('clothStoreCustomCategories', JSON.stringify(customCategories));
+            showMessage('Category Added', `"${category}" has been added.`, 'success');
+        } else {
+            showMessage('Exists', 'This category already exists.', 'warning');
+        }
+    }
+
+    function updateCategoryTags() {
+        const container = document.getElementById('categoryTags');
+        container.innerHTML = customCategories.map(cat => 
+            `<span class="category-tag" onclick="selectCategory('${cat}')">${cat}</span>`
+        ).join('');
+    }
+
+    function selectCategory(category) {
+        document.getElementById('categorySelect').value = category;
+    }
+
+    // ---------- SHOP SETTINGS ----------
+    function loadShopSettings() {
+        const saved = localStorage.getItem('clothStoreShopSettings');
+        if (saved) {
+            shopSettings = JSON.parse(saved);
+        } else {
+            shopSettings = {
+                name: 'My Shop',
+                address: '123 Main Street',
+                phone: '+94 11 234 5678',
+                currency: 'Rs',
+                logo: ''
+            };
+            localStorage.setItem('clothStoreShopSettings', JSON.stringify(shopSettings));
+        }
+        applyShopSettings();
+    }
+
+    function saveShopSettings() {
+        const name = document.getElementById('shopNameInput').value.trim();
+        const address = document.getElementById('shopAddressInput').value.trim();
+        const phone = document.getElementById('shopPhoneInput').value.trim();
+        const currency = document.getElementById('currencyInput').value.trim();
+        
+        if (!name) {
+            showMessage('Error', 'Shop name is required.', 'error');
+            return;
         }
         
-        function closeMessageModal() {
-            document.getElementById('customMessageModal').style.display = 'none';
-        }
+        shopSettings.name = name || 'My Shop';
+        shopSettings.address = address || '123 Main Street';
+        shopSettings.phone = phone || '+94 11 234 5678';
+        shopSettings.currency = currency || 'Rs';
+        
+        localStorage.setItem('clothStoreShopSettings', JSON.stringify(shopSettings));
+        applyShopSettings();
+        // 🔥 Update all displays immediately with new currency
+        updateAllDisplays();
+        showMessage('Settings Saved', 'Shop settings have been updated.', 'success');
+    }
 
-        // Custom Confirm Box
-        let confirmCallback = null;
+    function applyShopSettings() {
+        // Header
+        const headerName = document.getElementById('headerShopName');
+        const headerLogo = document.getElementById('headerShopLogo');
         
-        function showConfirm(title, message, callback) {
-            const modal = document.getElementById('customConfirmModal');
-            document.getElementById('confirmTitle').textContent = title;
-            document.getElementById('confirmText').textContent = message;
-            confirmCallback = callback;
-            modal.style.display = 'flex';
-        }
-        
-        function closeConfirmModal() {
-            document.getElementById('customConfirmModal').style.display = 'none';
-            confirmCallback = null;
-        }
-        
-        document.getElementById('confirmYesBtn').onclick = function() {
-            if (confirmCallback) confirmCallback(true);
-            closeConfirmModal();
-        };
-        
-        document.getElementById('confirmNoBtn').onclick = function() {
-            if (confirmCallback) confirmCallback(false);
-            closeConfirmModal();
-        };
-
-        // User data structure
-        let users = [];
-        let currentUser = null;
-        let inventory = [];
-        let cart = [];
-        let nextId = 1;
-        let editMode = false;
-        let editId = null;
-        
-        // Daily Sales Data
-        let dailySales = {
-            date: new Date().toDateString(),
-            totalIncome: 0,
-            totalBills: 0,
-            totalItems: 0,
-            bills: []
-        };
-        
-        let currentBillData = null;
-
-        // Load users from localStorage
-        function loadUsers() {
-            const saved = localStorage.getItem('clothStoreUsers');
-            if (saved) {
-                users = JSON.parse(saved);
+        if (headerName) headerName.textContent = shopSettings.name;
+        if (headerLogo) {
+            if (shopSettings.logo && shopSettings.logo.length > 0) {
+                headerLogo.src = shopSettings.logo;
+                headerLogo.style.display = 'block';
+                headerLogo.style.width = '40px';
+                headerLogo.style.height = '40px';
+                headerLogo.style.objectFit = 'cover';
+                headerLogo.style.borderRadius = '50%';
             } else {
-                users = [{
-                    id: 1,
-                    name: "Demo User",
-                    email: "demo@example.com",
-                    password: "123456",
-                    inventory: [],
-                    nextId: 1,
-                    dailySales: null
-                }];
-                saveUsers();
+                headerLogo.style.display = 'none';
             }
         }
 
-        function saveUsers() {
-            localStorage.setItem('clothStoreUsers', JSON.stringify(users));
+        // Settings form
+        const nameInput = document.getElementById('shopNameInput');
+        const addressInput = document.getElementById('shopAddressInput');
+        const phoneInput = document.getElementById('shopPhoneInput');
+        const currencyInput = document.getElementById('currencyInput');
+        
+        if (nameInput) nameInput.value = shopSettings.name;
+        if (addressInput) addressInput.value = shopSettings.address;
+        if (phoneInput) phoneInput.value = shopSettings.phone;
+        if (currencyInput) currencyInput.value = shopSettings.currency;
+
+        // Preview
+        const previewName = document.getElementById('previewShopName');
+        const previewAddress = document.getElementById('previewShopAddress');
+        const previewPhone = document.getElementById('previewShopPhone');
+        const previewCurrency = document.getElementById('previewCurrency');
+        const previewLogo = document.getElementById('previewLogo');
+        const previewSmall = document.getElementById('logoPreviewSmall');
+        
+        if (previewName) previewName.textContent = shopSettings.name;
+        if (previewAddress) previewAddress.textContent = shopSettings.address;
+        if (previewPhone) previewPhone.textContent = shopSettings.phone;
+        if (previewCurrency) previewCurrency.textContent = 'Currency: ' + shopSettings.currency;
+        
+        if (previewLogo && previewSmall) {
+            if (shopSettings.logo && shopSettings.logo.length > 0) {
+                previewLogo.src = shopSettings.logo;
+                previewLogo.style.display = 'block';
+                previewLogo.style.width = '80px';
+                previewLogo.style.height = '80px';
+                previewLogo.style.objectFit = 'cover';
+                previewLogo.style.borderRadius = '50%';
+                
+                previewSmall.src = shopSettings.logo;
+                previewSmall.style.display = 'block';
+                previewSmall.style.width = '60px';
+                previewSmall.style.height = '60px';
+                previewSmall.style.objectFit = 'cover';
+                previewSmall.style.borderRadius = '50%';
+            } else {
+                previewLogo.style.display = 'none';
+                previewSmall.style.display = 'none';
+            }
+        }
+    }
+
+    // 🔥 Update all displays with current currency
+    function updateAllDisplays() {
+        displayCart();
+        displayProducts();
+        displayInventory();
+        updateStats();
+        updateDailyReportDisplay();
+        // Update any open bill modal if it exists
+        if (currentBillData) {
+            showBillModal(currentBillData);
+        }
+    }
+
+    function handleLogoUpload(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        if (!file.type.startsWith('image/')) {
+            showMessage('Error', 'Please upload an image file.', 'error');
+            return;
         }
         
-        // Load Daily Sales for current user
-        function loadDailySales() {
-            if (currentUser && currentUser.dailySales) {
-                const savedSales = currentUser.dailySales;
-                const today = new Date().toDateString();
-                if (savedSales.date === today) {
-                    dailySales = savedSales;
-                } else {
-                    // New day - reset sales
-                    dailySales = {
-                        date: today,
-                        totalIncome: 0,
-                        totalBills: 0,
-                        totalItems: 0,
-                        bills: []
-                    };
-                    saveDailySales();
-                }
-            } else if (currentUser) {
-                dailySales = {
-                    date: new Date().toDateString(),
-                    totalIncome: 0,
-                    totalBills: 0,
-                    totalItems: 0,
-                    bills: []
-                };
+        if (file.size > 2 * 1024 * 1024) {
+            showMessage('Error', 'Image size should be less than 2MB.', 'error');
+            return;
+        }
+        
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const logoData = e.target.result;
+            shopSettings.logo = logoData;
+            localStorage.setItem('clothStoreShopSettings', JSON.stringify(shopSettings));
+            applyShopSettings();
+            showMessage('Logo Updated', 'Logo has been uploaded and resized automatically.', 'success');
+        };
+        reader.onerror = function() {
+            showMessage('Error', 'Failed to read the image file.', 'error');
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function removeLogo() {
+        shopSettings.logo = '';
+        localStorage.setItem('clothStoreShopSettings', JSON.stringify(shopSettings));
+        applyShopSettings();
+        document.getElementById('logoUpload').value = '';
+        showMessage('Logo Removed', 'Logo has been removed.', 'info');
+    }
+
+    // ---------- USER MGMT ----------
+    function loadUsers() {
+        const saved = localStorage.getItem('clothStoreUsers');
+        if (saved) {
+            users = JSON.parse(saved);
+        } else {
+            users = [{ id: 1, name: "Demo User", email: "demo@example.com", password: "123456", inventory: [], nextId: 1, dailySales: null }];
+            saveUsers();
+        }
+    }
+
+    function saveUsers() {
+        localStorage.setItem('clothStoreUsers', JSON.stringify(users));
+    }
+
+    function loadDailySales() {
+        if (currentUser && currentUser.dailySales) {
+            const saved = currentUser.dailySales;
+            const today = new Date().toDateString();
+            if (saved.date === today) {
+                dailySales = saved;
+            } else {
+                dailySales = { date: today, totalIncome: 0, totalBills: 0, totalItems: 0, bills: [] };
                 saveDailySales();
             }
-            updateDailyReportDisplay();
-        }
-        
-        function saveDailySales() {
-            if (currentUser) {
-                currentUser.dailySales = dailySales;
-                const userIndex = users.findIndex(u => u.id === currentUser.id);
-                if (userIndex !== -1) {
-                    users[userIndex] = currentUser;
-                    saveUsers();
-                }
-            }
-            updateDailyReportDisplay();
-        }
-        
-        function updateDailyReportDisplay() {
-            // Update POS summary
-            document.getElementById('dailyBillsCount').textContent = dailySales.totalBills;
-            document.getElementById('dailyIncome').innerHTML = formatCurrency(dailySales.totalIncome);
-            const avgBill = dailySales.totalBills > 0 ? dailySales.totalIncome / dailySales.totalBills : 0;
-            document.getElementById('dailyAvgBill').innerHTML = formatCurrency(avgBill);
-            
-            // Update Reports tab
-            document.getElementById('reportDate').textContent = dailySales.date;
-            document.getElementById('reportTotalBills').textContent = dailySales.totalBills;
-            document.getElementById('reportTotalItems').textContent = dailySales.totalItems;
-            document.getElementById('reportTotalIncome').innerHTML = formatCurrency(dailySales.totalIncome);
-            document.getElementById('reportAvgBill').innerHTML = formatCurrency(avgBill);
-            
-            // Update bills list
-            const billsList = document.getElementById('billsList');
-            if (dailySales.bills.length === 0) {
-                billsList.innerHTML = '<tr><td colspan="5" style="text-align:center; padding:20px;">No bills yet today</td></tr>';
-            } else {
-                billsList.innerHTML = dailySales.bills.slice().reverse().map(bill => `
-                    <tr>
-                        <td>${bill.billNumber}</td>
-                        <td>${bill.time}</td>
-                        <td>${bill.itemCount}</td>
-                        <td>${formatCurrency(bill.total)}</td>
-                        <td>${bill.cashier}</td>
-                    </tr>
-                `).join('');
-            }
-        }
-        
-        function addBillToReport(billData) {
-            dailySales.totalIncome += billData.grandTotal;
-            dailySales.totalBills++;
-            dailySales.totalItems += billData.items.reduce((sum, item) => sum + item.quantity, 0);
-            dailySales.bills.push({
-                billNumber: billData.billNumber,
-                time: new Date().toLocaleTimeString(),
-                itemCount: billData.items.reduce((sum, item) => sum + item.quantity, 0),
-                total: billData.grandTotal,
-                cashier: billData.cashier
-            });
+        } else if (currentUser) {
+            dailySales = { date: new Date().toDateString(), totalIncome: 0, totalBills: 0, totalItems: 0, bills: [] };
             saveDailySales();
         }
-        
-        function resetDailyReport() {
-            showConfirm('Reset Report', 'Are you sure you want to reset today\'s sales report? This cannot be undone!', function(confirmed) {
-                if (confirmed) {
-                    dailySales = {
-                        date: new Date().toDateString(),
-                        totalIncome: 0,
-                        totalBills: 0,
-                        totalItems: 0,
-                        bills: []
-                    };
-                    saveDailySales();
-                    showMessage('Report Reset', 'Today\'s sales report has been reset.', 'success');
-                }
-            });
+        updateDailyReportDisplay();
+    }
+
+    function saveDailySales() {
+        if (currentUser) {
+            currentUser.dailySales = dailySales;
+            const idx = users.findIndex(u => u.id === currentUser.id);
+            if (idx !== -1) { users[idx] = currentUser; saveUsers(); }
+        }
+        updateDailyReportDisplay();
+    }
+
+    function updateDailyReportDisplay() {
+        document.getElementById('dailyBillsCount').textContent = dailySales.totalBills;
+        document.getElementById('dailyIncome').innerHTML = formatCurrency(dailySales.totalIncome);
+        const avg = dailySales.totalBills > 0 ? dailySales.totalIncome / dailySales.totalBills : 0;
+        document.getElementById('dailyAvgBill').innerHTML = formatCurrency(avg);
+
+        document.getElementById('reportDate').textContent = dailySales.date;
+        document.getElementById('reportTotalBills').textContent = dailySales.totalBills;
+        document.getElementById('reportTotalItems').textContent = dailySales.totalItems;
+        document.getElementById('reportTotalIncome').innerHTML = formatCurrency(dailySales.totalIncome);
+        document.getElementById('reportAvgBill').innerHTML = formatCurrency(avg);
+        renderBillsList(dailySales.bills);
+    }
+
+    function renderBillsList(bills) {
+        const tbody = document.getElementById('billsList');
+        if (!bills || bills.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="no-bills">No bills found</td></tr>';
+            return;
+        }
+        tbody.innerHTML = bills.slice().reverse().map(b => `
+            <tr>
+                <td>${b.billNumber || 'N/A'}</td>
+                <td>${b.time || ''}</td>
+                <td>${b.itemCount || 0}</td>
+                <td>${formatCurrency(b.total || 0)}</td>
+                <td>${b.cashier || ''}</td>
+            </tr>
+        `).join('');
+    }
+
+    function addBillToReport(billData) {
+        dailySales.totalIncome += billData.grandTotal;
+        dailySales.totalBills++;
+        dailySales.totalItems += billData.items.reduce((s, i) => s + i.quantity, 0);
+        dailySales.bills.push({
+            billNumber: billData.billNumber,
+            time: new Date().toLocaleTimeString(),
+            itemCount: billData.items.reduce((s, i) => s + i.quantity, 0),
+            total: billData.grandTotal,
+            cashier: billData.cashier
+        });
+        saveDailySales();
+    }
+
+    function resetDailyReport() {
+        showConfirm('Reset Report', 'Reset today\'s sales report?', (ok) => {
+            if (ok) {
+                dailySales = { date: new Date().toDateString(), totalIncome: 0, totalBills: 0, totalItems: 0, bills: [] };
+                saveDailySales();
+                showMessage('Reset', 'Report reset.', 'success');
+            }
+        });
+    }
+
+    function generateCustomReport() {
+        const from = document.getElementById('filterDateFrom').value;
+        const to = document.getElementById('filterDateTo').value;
+        if (!from || !to) {
+            showMessage('Missing date', 'Please select both From and To dates.', 'warning');
+            return;
+        }
+        const fromDate = new Date(from);
+        const toDate = new Date(to);
+        if (fromDate > toDate) {
+            showMessage('Invalid range', 'From date must be before To date.', 'error');
+            return;
         }
 
-        // Load current user's inventory
-        function loadUserInventory() {
-            if (currentUser) {
-                inventory = currentUser.inventory || [];
-                if (inventory.length > 0) {
-                    nextId = Math.max(...inventory.map(i => i.id), 0) + 1;
-                } else {
-                    nextId = 1;
-                }
-                displayInventory();
-                updateStats();
-                displayProducts();
-            }
+        let filtered = dailySales.bills.filter(b => {
+            const billDate = new Date(dailySales.date);
+            return billDate >= fromDate && billDate <= toDate;
+        });
+
+        if (filtered.length === 0) {
+            showMessage('No bills', 'No bills found in the selected date range.', 'info');
+            renderBillsList([]);
+            return;
         }
 
-        function saveCurrentUserInventory() {
-            if (currentUser) {
-                currentUser.inventory = inventory;
-                currentUser.nextId = nextId;
-                const userIndex = users.findIndex(u => u.id === currentUser.id);
-                if (userIndex !== -1) {
-                    users[userIndex] = currentUser;
-                    saveUsers();
-                }
+        let totalIncome = filtered.reduce((s, b) => s + b.total, 0);
+        let totalItems = filtered.reduce((s, b) => s + b.itemCount, 0);
+        let totalBills = filtered.length;
+        let avgBill = totalBills > 0 ? totalIncome / totalBills : 0;
+
+        document.getElementById('reportTotalBills').textContent = totalBills;
+        document.getElementById('reportTotalItems').textContent = totalItems;
+        document.getElementById('reportTotalIncome').innerHTML = formatCurrency(totalIncome);
+        document.getElementById('reportAvgBill').innerHTML = formatCurrency(avgBill);
+        renderBillsList(filtered);
+        showMessage('Report generated', `Showing ${filtered.length} bills from ${from} to ${to}`, 'info');
+    }
+
+    function resetReportFilter() {
+        document.getElementById('filterDateFrom').value = '';
+        document.getElementById('filterDateTo').value = '';
+        updateDailyReportDisplay();
+        showMessage('Reset', 'Showing today\'s full report.', 'info');
+    }
+
+    // ---------- AUTH ----------
+    function register() {
+        const name = document.getElementById('regName').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const password = document.getElementById('regPassword').value;
+        if (!name || !email || !password) { showMessage('Error', 'Fill all fields.', 'error'); return; }
+        if (users.find(u => u.email === email)) { showMessage('Error', 'Email exists.', 'error'); return; }
+        users.push({ id: users.length + 1, name, email, password, inventory: [], nextId: 1, dailySales: null });
+        saveUsers();
+        showMessage('Registered', 'Account created! Please login.', 'success');
+        showLogin();
+    }
+
+    function login() {
+        const email = document.getElementById('loginEmail').value.trim();
+        const password = document.getElementById('loginPassword').value;
+        if (!email || !password) { showMessage('Error', 'Enter credentials.', 'error'); return; }
+        const user = users.find(u => u.email === email && u.password === password);
+        if (!user) { showMessage('Error', 'Invalid email/password.', 'error'); return; }
+        currentUser = user;
+        localStorage.setItem('currentUser', JSON.stringify({ id: user.id, email: user.email }));
+        inventory = user.inventory || [];
+        nextId = user.nextId || 1;
+        cart = [];
+        document.getElementById('authSection').style.display = 'none';
+        document.getElementById('mainApp').style.display = 'block';
+        document.getElementById('userNameDisplay').textContent = user.name;
+        loadUserInventory();
+        loadDailySales();
+        displayCart();
+        showMessage('Welcome ' + user.name + '!', 'Logged in.', 'success');
+    }
+
+    function logout() {
+        showConfirm('Logout', 'Are you sure?', (ok) => {
+            if (ok) {
+                currentUser = null;
+                localStorage.removeItem('currentUser');
+                document.getElementById('authSection').style.display = 'block';
+                document.getElementById('mainApp').style.display = 'none';
+                showMessage('Logged out', 'See you later.', 'info');
             }
-        }
+        });
+    }
 
-        // Authentication functions
-        function register() {
-            const name = document.getElementById('regName').value.trim();
-            const email = document.getElementById('regEmail').value.trim();
-            const password = document.getElementById('regPassword').value;
+    function showRegister() {
+        document.getElementById('loginForm').style.display = 'none';
+        document.getElementById('registerForm').style.display = 'block';
+        document.getElementById('authTitle').textContent = '📝 Register';
+    }
 
-            if (!name || !email || !password) {
-                showMessage('Registration Failed', 'Please fill all fields', 'error');
-                return;
-            }
+    function showLogin() {
+        document.getElementById('loginForm').style.display = 'block';
+        document.getElementById('registerForm').style.display = 'none';
+        document.getElementById('authTitle').textContent = '🔐 Login';
+    }
 
-            if (users.find(u => u.email === email)) {
-                showMessage('Registration Failed', 'Email already exists!', 'error');
-                return;
-            }
-
-            const newUser = {
-                id: users.length + 1,
-                name: name,
-                email: email,
-                password: password,
-                inventory: [],
-                nextId: 1,
-                dailySales: null
-            };
-
-            users.push(newUser);
-            saveUsers();
-            showMessage('Registration Successful', 'Your account has been created! Please login.', 'success');
-            showLogin();
-        }
-
-        function login() {
-            const email = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-
-            if (!email || !password) {
-                showMessage('Login Failed', 'Please enter email and password', 'error');
-                return;
-            }
-
-            const user = users.find(u => u.email === email && u.password === password);
-            
+    function checkSession() {
+        const saved = localStorage.getItem('currentUser');
+        if (saved) {
+            const data = JSON.parse(saved);
+            const user = users.find(u => u.id === data.id);
             if (user) {
                 currentUser = user;
-                localStorage.setItem('currentUser', JSON.stringify({id: user.id, email: user.email}));
                 inventory = user.inventory || [];
                 nextId = user.nextId || 1;
-                cart = [];
-                
                 document.getElementById('authSection').style.display = 'none';
                 document.getElementById('mainApp').style.display = 'block';
                 document.getElementById('userNameDisplay').textContent = user.name;
-                
                 loadUserInventory();
                 loadDailySales();
                 displayCart();
-                showMessage('Welcome ' + user.name + '!', 'You have successfully logged in.', 'success');
-            } else {
-                showMessage('Login Failed', 'Invalid email or password!', 'error');
+                return true;
             }
         }
+        return false;
+    }
 
-        function logout() {
-            showConfirm('Logout', 'Are you sure you want to logout?', function(confirmed) {
-                if (confirmed) {
-                    currentUser = null;
-                    localStorage.removeItem('currentUser');
-                    document.getElementById('authSection').style.display = 'block';
-                    document.getElementById('mainApp').style.display = 'none';
-                    document.getElementById('loginEmail').value = '';
-                    document.getElementById('loginPassword').value = '';
-                    showMessage('Logged Out', 'You have been logged out successfully.', 'info');
-                }
+    // ---------- INVENTORY ----------
+    function loadUserInventory() {
+        if (currentUser) {
+            inventory = currentUser.inventory || [];
+            if (inventory.length > 0) nextId = Math.max(...inventory.map(i => i.id), 0) + 1;
+            else nextId = 1;
+            const categories = new Set();
+            inventory.forEach(item => {
+                if (item.category) categories.add(item.category);
             });
+            customCategories = Array.from(categories);
+            updateCategoryTags();
+            displayInventory();
+            updateStats();
+            displayProducts();
         }
+    }
 
-        function showRegister() {
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('registerForm').style.display = 'block';
-            document.getElementById('authTitle').textContent = '📝 Register';
+    function saveCurrentUserInventory() {
+        if (currentUser) {
+            currentUser.inventory = inventory;
+            currentUser.nextId = nextId;
+            const idx = users.findIndex(u => u.id === currentUser.id);
+            if (idx !== -1) { users[idx] = currentUser; saveUsers(); }
         }
+    }
 
-        function showLogin() {
-            document.getElementById('loginForm').style.display = 'block';
-            document.getElementById('registerForm').style.display = 'none';
-            document.getElementById('authTitle').textContent = '🔐 Login';
+    // ---------- UI FUNCTIONS ----------
+    function switchTab(tab) {
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        if (tab === 'pos') {
+            document.getElementById('posTab').classList.add('active');
+            document.querySelectorAll('.tab-btn')[0].classList.add('active');
+            displayProducts();
+            displayCart();
+        } else if (tab === 'inventory') {
+            document.getElementById('inventoryTab').classList.add('active');
+            document.querySelectorAll('.tab-btn')[1].classList.add('active');
+        } else if (tab === 'reports') {
+            document.getElementById('reportsTab').classList.add('active');
+            document.querySelectorAll('.tab-btn')[2].classList.add('active');
+            updateDailyReportDisplay();
+        } else if (tab === 'settings') {
+            document.getElementById('settingsTab').classList.add('active');
+            document.querySelectorAll('.tab-btn')[3].classList.add('active');
+            applyShopSettings();
         }
+    }
 
-        // Check for saved session
-        function checkSession() {
-            const savedUser = localStorage.getItem('currentUser');
-            if (savedUser) {
-                const userData = JSON.parse(savedUser);
-                const user = users.find(u => u.id === userData.id);
-                if (user) {
-                    currentUser = user;
-                    inventory = user.inventory || [];
-                    nextId = user.nextId || 1;
-                    document.getElementById('authSection').style.display = 'none';
-                    document.getElementById('mainApp').style.display = 'block';
-                    document.getElementById('userNameDisplay').textContent = user.name;
-                    loadUserInventory();
-                    loadDailySales();
-                    displayCart();
-                    return true;
-                }
-            }
-            return false;
+    // 🔥 FIXED: formatCurrency now always returns the current currency
+    function formatCurrency(amount) {
+        // Use the currency from shopSettings, default to 'Rs' if not set
+        const currency = shopSettings.currency || 'Rs';
+        return currency + ' ' + Number(amount).toFixed(2);
+    }
+
+    function displayProducts(search = '') {
+        const q = search.toLowerCase();
+        let filtered = inventory.filter(i => !q || i.name.toLowerCase().includes(q) || i.category.toLowerCase().includes(q));
+        const grid = document.getElementById('productsGrid');
+        if (!grid) return;
+        if (filtered.length === 0) {
+            grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div><p>No products in inventory</p></div>';
+            return;
         }
-
-        // App Functions
-        function switchTab(tab) {
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            if (tab === 'pos') {
-                document.getElementById('posTab').classList.add('active');
-                document.querySelectorAll('.tab-btn')[0].classList.add('active');
-                displayProducts();
-                displayCart();
-            } else if (tab === 'inventory') {
-                document.getElementById('inventoryTab').classList.add('active');
-                document.querySelectorAll('.tab-btn')[1].classList.add('active');
-            } else if (tab === 'reports') {
-                document.getElementById('reportsTab').classList.add('active');
-                document.querySelectorAll('.tab-btn')[2].classList.add('active');
-                updateDailyReportDisplay();
-            }
-        }
-
-        function formatCurrency(amount) {
-            return 'Rs ' + amount.toFixed(2);
-        }
-
-        function displayProducts(search = '') {
-            let filtered = inventory.filter(i => !search || i.name.toLowerCase().includes(search) || i.category.toLowerCase().includes(search));
-            const grid = document.getElementById('productsGrid');
-            if (!grid) return;
-            if (filtered.length === 0) {
-                grid.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📦</div><p>No products yet.<br>Go to Inventory tab to add your first product!</p></div>';
-                return;
-            }
-            grid.innerHTML = filtered.map(i => `
-                <div class="product-card" onclick="addToCart(${i.id})">
-                    <div class="product-info">
-                        <h4>${i.name}</h4>
-                        <p>${i.category} | ${i.size}</p>
-                    </div>
-                    <div class="product-price">
-                        <div class="price">${formatCurrency(i.price)}</div>
-                        <div class="stock">📦 ${i.quantity}</div>
-                    </div>
+        grid.innerHTML = filtered.map(i => `
+            <div class="product-card" onclick="addToCart(${i.id})">
+                <div class="product-info">
+                    <h4>${i.name}</h4>
+                    <p>${i.category || 'General'} ${i.sku ? '| ' + i.sku : ''}</p>
                 </div>
-            `).join('');
-        }
+                <div class="product-price">
+                    <div class="price">${formatCurrency(i.price)}</div>
+                    <div>📦 ${i.quantity}</div>
+                </div>
+            </div>
+        `).join('');
+    }
 
-        function searchProducts() {
-            displayProducts(document.getElementById('searchProduct').value.toLowerCase());
-        }
+    function searchProducts() {
+        displayProducts(document.getElementById('searchProduct').value);
+    }
 
-        function addToCart(id) {
-            const p = inventory.find(i => i.id === id);
-            if (!p || p.quantity <= 0) { 
-                showMessage('Out of Stock', 'This product is currently out of stock!', 'warning');
-                return; 
-            }
-            const existing = cart.find(i => i.id === id);
-            if (existing) {
-                if (existing.quantity + 1 <= p.quantity) existing.quantity++;
-                else showMessage('Stock Limit', 'Not enough stock available!', 'warning');
-            } else cart.push({id:p.id, name:p.name, size:p.size, price:p.price, quantity:1, maxStock:p.quantity});
+    function addToCart(id) {
+        const p = inventory.find(i => i.id === id);
+        if (!p || p.quantity <= 0) { showMessage('Out of stock', 'This product is unavailable.', 'warning'); return; }
+        const existing = cart.find(i => i.id === id);
+        if (existing) {
+            if (existing.quantity + 1 <= p.quantity) existing.quantity++;
+            else showMessage('Stock limit', 'Not enough stock.', 'warning');
+        } else cart.push({ id: p.id, name: p.name, sku: p.sku, price: p.price, quantity: 1, maxStock: p.quantity });
+        displayCart();
+    }
+
+    function updateCartQuantity(id, qty) {
+        const cItem = cart.find(i => i.id === id);
+        const invItem = inventory.find(i => i.id === id);
+        if (cItem && invItem) {
+            qty = parseInt(qty) || 0;
+            if (qty > 0 && qty <= invItem.quantity) cItem.quantity = qty;
+            else if (qty <= 0) cart = cart.filter(i => i.id !== id);
+            else showMessage('Stock limit', 'Not enough stock.', 'warning');
             displayCart();
         }
+    }
 
-        function updateCartQuantity(id, qty) {
-            const cartItem = cart.find(i => i.id === id);
-            const invItem = inventory.find(i => i.id === id);
-            if (cartItem && invItem) {
-                if (qty > 0 && qty <= invItem.quantity) cartItem.quantity = qty;
-                else if (qty > invItem.quantity) showMessage('Stock Limit', 'Not enough stock available!', 'warning');
-                else if (qty <= 0) cart = cart.filter(i => i.id !== id);
-                displayCart();
-            }
+    function removeFromCart(id) { cart = cart.filter(i => i.id !== id); displayCart(); }
+
+    function displayCart() {
+        const div = document.getElementById('cartItems');
+        if (!div) return;
+        if (cart.length === 0) {
+            div.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🛒</div><p>Cart is empty</p></div>';
+            document.getElementById('cartTotal').innerHTML = 'Total: ' + formatCurrency(0);
+            document.getElementById('cartCount').textContent = '0';
+            document.getElementById('cartTotalDisplay').innerHTML = formatCurrency(0);
+            return;
         }
+        let html = '<table class="cart-table"><thead><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr></thead><tbody>';
+        let total = 0;
+        cart.forEach(i => {
+            const t = i.price * i.quantity;
+            total += t;
+            html += `<tr>
+                <td><strong>${i.name}</strong><br><small>${i.sku || ''}</small></td>
+                <td><input type="number" class="quantity-input" value="${i.quantity}" min="1" max="${i.maxStock}" onchange="updateCartQuantity(${i.id}, this.value)"></td>
+                <td><strong>${formatCurrency(t)}</strong></td>
+                <td><button class="btn-remove" onclick="removeFromCart(${i.id})">🗑️</button></td>
+            </tr>`;
+        });
+        html += '</tbody></table>';
+        div.innerHTML = html;
+        document.getElementById('cartTotal').innerHTML = `Total: ${formatCurrency(total)}`;
+        document.getElementById('cartCount').textContent = cart.reduce((s, i) => s + i.quantity, 0);
+        document.getElementById('cartTotalDisplay').innerHTML = formatCurrency(total);
+    }
 
-        function removeFromCart(id) { cart = cart.filter(i => i.id !== id); displayCart(); }
+    function checkout() {
+        if (cart.length === 0) { showMessage('Empty cart', 'Add products first.', 'warning'); return; }
+        let grandTotal = 0;
+        cart.forEach(c => {
+            const inv = inventory.find(i => i.id === c.id);
+            if (inv) { inv.quantity -= c.quantity; grandTotal += c.price * c.quantity; }
+        });
+        saveCurrentUserInventory();
+        const now = new Date();
+        const billData = {
+            billNumber: 'BILL-' + now.getTime(),
+            date: now.toLocaleDateString('en-LK', { timeZone: 'Asia/Colombo' }),
+            time: now.toLocaleTimeString('en-LK', { timeZone: 'Asia/Colombo' }),
+            cashier: currentUser.name,
+            items: cart.map(i => ({ name: i.name, sku: i.sku, quantity: i.quantity, price: i.price, total: i.price * i.quantity })),
+            subtotal: grandTotal,
+            grandTotal: grandTotal
+        };
+        addBillToReport(billData);
+        cart = [];
+        displayCart();
+        displayProducts();
+        displayInventory();
+        updateStats();
+        showBillModal(billData);
+        showMessage('Checkout', 'Bill generated!', 'success');
+    }
 
-        function displayCart() {
-            const cartDiv = document.getElementById('cartItems');
-            if (!cartDiv) return;
-            if (cart.length === 0) {
-                cartDiv.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🛒</div><p>Cart is empty</p></div>';
-                document.getElementById('cartTotal').innerHTML = 'Total: Rs 0.00';
-                document.getElementById('cartCount').innerHTML = '0';
-                document.getElementById('cartTotalDisplay').innerHTML = 'Rs 0';
-                return;
-            }
-            let html = '<table class="cart-table"><thead><tr><th>Item</th><th>Qty</th><th>Total</th><th></th></tr></thead><tbody>';
-            let total = 0;
-            cart.forEach(i => {
-                const itemTotal = i.price * i.quantity;
-                total += itemTotal;
-                html += `<tr>
-                    <td><strong>${i.name}</strong><br><small>${i.size}</small></td>
-                    <td><input type="number" class="quantity-input" value="${i.quantity}" min="1" max="${i.maxStock}" onchange="updateCartQuantity(${i.id}, this.value)"></td>
-                    <td><strong>${formatCurrency(itemTotal)}</strong></td>
-                    <td><button class="btn-remove" onclick="removeFromCart(${i.id})">🗑️</button></td>
-                </tr>`;
-            });
-            html += '</tbody></table>';
-            cartDiv.innerHTML = html;
-            document.getElementById('cartTotal').innerHTML = `Total: ${formatCurrency(total)}`;
-            document.getElementById('cartCount').innerHTML = cart.reduce((s, i) => s + i.quantity, 0);
-            document.getElementById('cartTotalDisplay').innerHTML = formatCurrency(total);
-        }
+    function clearCart() {
+        if (cart.length === 0) { showMessage('Cart empty', 'Nothing to clear.', 'info'); return; }
+        showConfirm('Clear cart', 'Remove all items from cart?', (ok) => { if (ok) { cart = []; displayCart(); showMessage('Cleared', 'Cart cleared.', 'success'); } });
+    }
 
-        // Generate Bill HTML
-        function generateBillHTML(billData) {
-            return `
-                <div class="bill-for-display">
-                    <div class="bill-header">
-                        <div class="bill-store-name">👕 CLOTH STORE</div>
-                        <div class="bill-address">123 Galle Road, Colombo 03</div>
-                        <div class="bill-address">Tel: +94 11 234 5678</div>
-                        <div class="bill-divider"></div>
-                        <div>Bill #: ${billData.billNumber}</div>
-                        <div>Date: ${billData.date}</div>
-                        <div>Time: ${billData.time}</div>
-                        <div>Cashier: ${billData.cashier}</div>
-                        <div class="bill-divider"></div>
-                    </div>
-                    
-                    <div class="bill-items">
-                        <div class="bill-row" style="font-weight: bold;">
-                            <span class="bill-item-name">Item</span>
-                            <span class="bill-item-qty">Qty</span>
-                            <span class="bill-item-price">Price</span>
-                            <span class="bill-item-total">Total</span>
-                        </div>
-                        <div class="bill-divider"></div>
-                        ${billData.items.map(item => `
-                            <div class="bill-item">
-                                <span class="bill-item-name">${item.name} (${item.size})</span>
-                                <span class="bill-item-qty">${item.quantity}</span>
-                                <span class="bill-item-price">${formatCurrency(item.price)}</span>
-                                <span class="bill-item-total">${formatCurrency(item.total)}</span>
-                            </div>
-                        `).join('')}
-                    </div>
-                    
+    // ---------- BILL MODAL ----------
+    function generateBillHTML(billData) {
+        const logoHTML = shopSettings.logo && shopSettings.logo.length > 0 ? 
+            `<img src="${shopSettings.logo}" class="bill-store-logo" alt="Logo">` : '';
+        return `
+            <div class="bill-for-display">
+                <div class="bill-header">
+                    ${logoHTML}
+                    <div class="bill-store-name">${shopSettings.name}</div>
+                    <div class="bill-address">${shopSettings.address}</div>
+                    <div class="bill-address">Tel: ${shopSettings.phone}</div>
                     <div class="bill-divider"></div>
-                    
-                    <div class="bill-total">
-                        <div class="bill-row">
-                            <span>Subtotal:</span>
-                            <span>${formatCurrency(billData.subtotal)}</span>
-                        </div>
-                        <div class="bill-row">
-                            <span>Tax (10%):</span>
-                            <span>${formatCurrency(billData.tax)}</span>
-                        </div>
-                        <div class="bill-row" style="font-weight: bold; font-size: 14px;">
-                            <span>GRAND TOTAL:</span>
-                            <span>${formatCurrency(billData.grandTotal)}</span>
-                        </div>
-                    </div>
-                    
+                    <div>Bill #: ${billData.billNumber}</div>
+                    <div>Date: ${billData.date}</div>
+                    <div>Time: ${billData.time}</div>
+                    <div>Cashier: ${billData.cashier}</div>
                     <div class="bill-divider"></div>
-                    
-                    <div class="bill-footer">
-                        <div>Thank you for shopping!</div>
-                        <div>Ayubowan! 🇱🇰</div>
-                        <div class="bill-divider"></div>
-                        <div style="font-size: 10px;">** No returns after 7 days **</div>
+                </div>
+                <div class="bill-items">
+                    <div class="bill-row" style="font-weight:bold;">
+                        <span class="bill-item-name">Item</span>
+                        <span class="bill-item-qty">Qty</span>
+                        <span class="bill-item-price">Price</span>
+                        <span class="bill-item-total">Total</span>
+                    </div>
+                    <div class="bill-divider"></div>
+                    ${billData.items.map(item => `
+                        <div class="bill-item">
+                            <span class="bill-item-name">${item.name}${item.sku ? ' (' + item.sku + ')' : ''}</span>
+                            <span class="bill-item-qty">${item.quantity}</span>
+                            <span class="bill-item-price">${formatCurrency(item.price)}</span>
+                            <span class="bill-item-total">${formatCurrency(item.total)}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="bill-divider"></div>
+                <div class="bill-total">
+                    <div class="bill-row" style="font-weight:bold;font-size:14px;">
+                        <span>TOTAL:</span>
+                        <span>${formatCurrency(billData.grandTotal)}</span>
                     </div>
                 </div>
-            `;
-        }
+                <div class="bill-divider"></div>
+                <div class="bill-footer">
+                    <div>Thank you for shopping!</div>
+                    <div style="font-size:10px;">** No returns after 7 days **</div>
+                </div>
+            </div>
+        `;
+    }
 
-        // Show Bill Modal
-        function showBillModal(billData) {
-            const billHTML = generateBillHTML(billData);
-            document.getElementById('billDisplay').innerHTML = billHTML;
-            document.getElementById('billModal').style.display = 'flex';
-            currentBillData = billData;
-        }
+    function showBillModal(billData) {
+        document.getElementById('billDisplay').innerHTML = generateBillHTML(billData);
+        document.getElementById('billModal').style.display = 'flex';
+        currentBillData = billData;
+    }
 
-        // Close Bill Modal
-        function closeBillModal() {
-            document.getElementById('billModal').style.display = 'none';
-            currentBillData = null;
-        }
+    function closeBillModal() {
+        document.getElementById('billModal').style.display = 'none';
+        currentBillData = null;
+    }
 
-        // Print Bill from Modal
-        function printBillFromModal() {
-            if (currentBillData) {
-                const printContainer = document.getElementById('printContainer');
-                const billHTML = generateBillHTML(currentBillData);
-                printContainer.innerHTML = billHTML;
-                
-                setTimeout(() => {
-                    window.print();
-                    printContainer.innerHTML = '';
-                }, 100);
-            }
+    function printBillFromModal() {
+        if (currentBillData) {
+            const pc = document.getElementById('printContainer');
+            pc.innerHTML = generateBillHTML(currentBillData);
+            setTimeout(() => { window.print(); pc.innerHTML = ''; }, 100);
         }
+    }
 
-        // Checkout Function
-        function checkout() {
-            if (cart.length === 0) { 
-                showMessage('Empty Cart', 'Your cart is empty. Add some products first!', 'warning');
-                return; 
-            }
-            
-            let subtotal = 0;
-            cart.forEach(c => {
-                const inv = inventory.find(i => i.id === c.id);
-                if (inv) { 
-                    inv.quantity -= c.quantity; 
-                    subtotal += c.price * c.quantity; 
-                }
-            });
-            
-            saveCurrentUserInventory();
-            
-            const now = new Date();
-            const billData = {
-                billNumber: 'BILL-' + now.getTime(),
-                date: now.toLocaleDateString('en-LK', { timeZone: 'Asia/Colombo' }),
-                time: now.toLocaleTimeString('en-LK', { timeZone: 'Asia/Colombo' }),
-                cashier: currentUser.name,
-                items: cart.map(i => ({
-                    name: i.name,
-                    size: i.size,
-                    quantity: i.quantity,
-                    price: i.price,
-                    total: i.price * i.quantity
-                })),
-                subtotal: subtotal,
-                tax: subtotal * 0.1,
-                grandTotal: subtotal * 1.1
-            };
-            
-            // Add to daily report
-            addBillToReport(billData);
-            
-            // Clear cart
-            cart = [];
-            displayCart(); 
-            displayProducts(); 
-            displayInventory(); 
-            updateStats();
-            
-            // Show bill
-            showBillModal(billData);
-            
-            showMessage('Checkout Complete', 'Your bill has been generated!', 'success');
-        }
-
-        function clearCart() { 
-            if (cart.length === 0) {
-                showMessage('Cart Empty', 'Nothing to clear!', 'info');
-                return;
-            }
-            showConfirm('Clear Cart', 'Are you sure you want to remove all items from cart?', function(confirmed) {
-                if (confirmed) {
-                    cart = []; 
-                    displayCart();
-                    showMessage('Cart Cleared', 'All items have been removed from your cart.', 'success');
-                }
-            });
-        }
-
-        function saveProduct() {
-            const name = document.getElementById('productName').value.trim();
-            const category = document.getElementById('category').value;
-            const size = document.getElementById('size').value;
-            const price = parseFloat(document.getElementById('price').value);
-            const quantity = parseInt(document.getElementById('quantity').value);
-            
-            if (!name) { 
-                showMessage('Missing Info', 'Please enter product name', 'warning');
-                return; 
-            }
-            if (isNaN(price) || price <= 0) { 
-                showMessage('Invalid Price', 'Please enter a valid price in Rupees', 'error');
-                return; 
-            }
-            if (isNaN(quantity) || quantity < 0) { 
-                showMessage('Invalid Quantity', 'Please enter a valid quantity', 'error');
-                return; 
-            }
-            
-            if (editMode) {
-                const idx = inventory.findIndex(i => i.id === editId);
-                if (idx !== -1) inventory[idx] = { ...inventory[idx], name, category, size, price, quantity };
-                editMode = false; editId = null;
-                document.getElementById('formTitle').innerHTML = '➕ Add New Product';
-                showMessage('Product Updated', 'Product has been updated successfully!', 'success');
-            } else {
-                inventory.push({ id: nextId++, name, category, size, price, quantity });
-                showMessage('Product Added', 'New product has been added to your inventory!', 'success');
-            }
-            saveCurrentUserInventory();
-            displayInventory(); updateStats(); displayProducts(); clearForm();
-        }
-
-        function editProduct(id) {
-            const p = inventory.find(i => i.id === id);
-            if (p) {
-                document.getElementById('productName').value = p.name;
-                document.getElementById('category').value = p.category;
-                document.getElementById('size').value = p.size;
-                document.getElementById('price').value = p.price;
-                document.getElementById('quantity').value = p.quantity;
-                editMode = true; editId = id;
-                document.getElementById('formTitle').innerHTML = '✏️ Edit Product';
-                switchTab('inventory');
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                showMessage('Edit Mode', 'You are now editing this product.', 'info');
-            }
-        }
-
-        function cancelEdit() { 
-            editMode = false; editId = null; clearForm(); 
-            document.getElementById('formTitle').innerHTML = '➕ Add New Product'; 
-            showMessage('Cancelled', 'Edit has been cancelled.', 'info'); 
-        }
+    // ---------- INVENTORY CRUD ----------
+    function saveProduct() {
+        const name = document.getElementById('productName').value.trim();
+        const category = document.getElementById('categorySelect').value;
+        const sku = document.getElementById('sku').value.trim();
+        const price = parseFloat(document.getElementById('price').value);
+        const quantity = parseInt(document.getElementById('quantity').value);
         
-        function deleteProduct(id) { 
-            showConfirm('Delete Product', 'Are you sure you want to delete this product?', function(confirmed) {
-                if (confirmed) {
-                    inventory = inventory.filter(i => i.id !== id); 
-                    saveCurrentUserInventory();
-                    displayInventory(); updateStats(); displayProducts(); 
-                    showMessage('Product Deleted', 'Product has been removed from inventory.', 'success'); 
-                    if (editMode && editId === id) cancelEdit(); 
-                }
-            });
+        if (!name) { showMessage('Error', 'Enter product name.', 'warning'); return; }
+        if (isNaN(price) || price <= 0) { showMessage('Error', 'Valid price required.', 'error'); return; }
+        if (isNaN(quantity) || quantity < 0) { showMessage('Error', 'Valid quantity required.', 'error'); return; }
+
+        if (editMode) {
+            const idx = inventory.findIndex(i => i.id === editId);
+            if (idx !== -1) inventory[idx] = { ...inventory[idx], name, category, sku, price, quantity };
+            editMode = false; editId = null;
+            document.getElementById('formTitle').innerHTML = '➕ Add Product';
+            showMessage('Updated', 'Product updated.', 'success');
+        } else {
+            inventory.push({ id: nextId++, name, category, sku, price, quantity });
+            showMessage('Added', 'Product added.', 'success');
         }
+        const categories = new Set();
+        inventory.forEach(item => {
+            if (item.category) categories.add(item.category);
+        });
+        customCategories = Array.from(categories);
+        updateCategoryTags();
+        localStorage.setItem('clothStoreCustomCategories', JSON.stringify(customCategories));
         
-        function searchInventory() { displayInventory(document.getElementById('searchInventory').value.toLowerCase()); }
-        
-        function displayInventory(search = '') {
-            let filtered = inventory.filter(i => !search || i.name.toLowerCase().includes(search) || i.category.toLowerCase().includes(search));
-            const tbody = document.getElementById('inventoryBody');
-            if (!tbody) return;
-            if (filtered.length === 0) { 
-                tbody.innerHTML = '<tr><td colspan="6" class="empty-state"><div class="empty-state-icon">📦</div><p>No products yet.<br>Add your first product using the form above!</p></td></tr>'; 
-                return; 
+        saveCurrentUserInventory();
+        displayInventory();
+        updateStats();
+        displayProducts();
+        clearForm();
+    }
+
+    function editProduct(id) {
+        const p = inventory.find(i => i.id === id);
+        if (p) {
+            document.getElementById('productName').value = p.name;
+            document.getElementById('categorySelect').value = p.category || 'General';
+            document.getElementById('sku').value = p.sku || '';
+            document.getElementById('price').value = p.price;
+            document.getElementById('quantity').value = p.quantity;
+            editMode = true; editId = id;
+            document.getElementById('formTitle').innerHTML = '✏️ Edit Product';
+            switchTab('inventory');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            showMessage('Edit mode', 'Editing ' + p.name, 'info');
+        }
+    }
+
+    function cancelEdit() {
+        editMode = false; editId = null; clearForm();
+        document.getElementById('formTitle').innerHTML = '➕ Add Product';
+        showMessage('Cancelled', 'Edit cancelled.', 'info');
+    }
+
+    function deleteProduct(id) {
+        showConfirm('Delete', 'Delete this product?', (ok) => {
+            if (ok) {
+                inventory = inventory.filter(i => i.id !== id);
+                saveCurrentUserInventory();
+                displayInventory();
+                updateStats();
+                displayProducts();
+                showMessage('Deleted', 'Product removed.', 'success');
+                if (editMode && editId === id) cancelEdit();
             }
-            tbody.innerHTML = filtered.map(i => `<tr>
+        });
+    }
+
+    function searchInventory() {
+        displayInventory(document.getElementById('searchInventory').value.toLowerCase());
+    }
+
+    function displayInventory(search = '') {
+        const q = search.toLowerCase();
+        let filtered = inventory.filter(i => !q || i.name.toLowerCase().includes(q) || i.category.toLowerCase().includes(q));
+        const tbody = document.getElementById('inventoryBody');
+        if (!tbody) return;
+        if (filtered.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="7" class="empty-state"><div class="empty-state-icon">📦</div><p>No products in inventory</p></td></tr>';
+            return;
+        }
+        tbody.innerHTML = filtered.map(i => `
+            <tr>
                 <td>${i.id}</td>
-                <td><div class="product-name-cell">${i.name}</div><div class="product-category">${i.category}</div></td>
-                <td><span class="badge">${i.size}</span></td>
-                <td><strong>${formatCurrency(i.price)}</strong></td>
-                <td class="${i.quantity < 5 ? 'low-stock' : ''}"><strong>${i.quantity}</strong> ${i.quantity < 5 ? '<span class="badge badge-warning">⚠️ Low</span>' : ''}</td>
+                <td><strong>${i.name}</strong></td>
+                <td><span class="badge">${i.category || 'General'}</span></td>
+                <td>${i.sku || '-'}</td>
+                <td>${formatCurrency(i.price)}</td>
+                <td class="${i.quantity < 5 ? 'low-stock' : ''}">${i.quantity} ${i.quantity < 5 ? '<span class="badge badge-warning">⚠️ Low</span>' : ''}</td>
                 <td class="action-buttons">
-                    <button class="btn-small btn-edit" onclick="editProduct(${i.id})">✏️ Edit</button>
-                    <button class="btn-small btn-delete" onclick="deleteProduct(${i.id})">🗑️ Delete</button>
+                    <button class="btn-small btn-edit" onclick="editProduct(${i.id})">✏️</button>
+                    <button class="btn-small btn-delete" onclick="deleteProduct(${i.id})">🗑️</button>
                 </td>
-            </tr>`).join('');
-        }
+            </tr>
+        `).join('');
+    }
 
-        function updateStats() {
-            document.getElementById('totalProducts').textContent = inventory.length;
-            document.getElementById('totalStock').textContent = inventory.reduce((s,i) => s + i.quantity, 0);
-            document.getElementById('totalValue').textContent = formatCurrency(inventory.reduce((s,i) => s + (i.price * i.quantity), 0));
-            document.getElementById('lowStock').textContent = inventory.filter(i => i.quantity < 5).length;
-        }
+    function updateStats() {
+        document.getElementById('totalProducts').textContent = inventory.length;
+        document.getElementById('totalStock').textContent = inventory.reduce((s, i) => s + i.quantity, 0);
+        document.getElementById('totalValue').innerHTML = formatCurrency(inventory.reduce((s, i) => s + (i.price * i.quantity), 0));
+        document.getElementById('lowStock').textContent = inventory.filter(i => i.quantity < 5).length;
+    }
 
-        function clearForm() {
-            document.getElementById('productName').value = '';
-            document.getElementById('price').value = '';
-            document.getElementById('quantity').value = '';
-            document.getElementById('category').value = 'Shirts';
-            document.getElementById('size').value = 'M';
-        }
+    function clearForm() {
+        document.getElementById('productName').value = '';
+        document.getElementById('sku').value = '';
+        document.getElementById('price').value = '';
+        document.getElementById('quantity').value = '';
+        document.getElementById('categorySelect').value = 'General';
+        document.getElementById('customCategoryInput').value = '';
+    }
 
-        // Initialize
-        loadUsers();
-        if (!checkSession()) {
-            document.getElementById('authSection').style.display = 'block';
-            document.getElementById('mainApp').style.display = 'none';
-        }
-    </script>
+    // ---------- INIT ----------
+    loadUsers();
+    loadShopSettings();
+    const savedCategories = localStorage.getItem('clothStoreCustomCategories');
+    if (savedCategories) {
+        customCategories = JSON.parse(savedCategories);
+        updateCategoryTags();
+        const select = document.getElementById('categorySelect');
+        customCategories.forEach(cat => {
+            if (!Array.from(select.options).some(opt => opt.value === cat)) {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat;
+                select.appendChild(option);
+            }
+        });
+    }
+    
+    if (!checkSession()) {
+        document.getElementById('authSection').style.display = 'block';
+        document.getElementById('mainApp').style.display = 'none';
+    }
+</script>
 </body>
 </html>
